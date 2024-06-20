@@ -32,6 +32,11 @@ const Video = new Schema({
         type: [CommentSchema], 
         required: true,
         default: [] 
+    },
+    views: {
+        type: Number, 
+        required: true,
+        default: 0
     }
 });
 

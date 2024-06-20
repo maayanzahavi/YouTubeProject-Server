@@ -5,4 +5,12 @@ const createUser = async (first_name, last_name, email, password, display_name, 
     return await user.save();
 }
 
-module.exports = { createUser };
+const getUserById = async (id) => {
+    return await User.findById(id);
+};
+
+const getUsers = async () => {
+    return await User.find({});
+};
+
+module.exports = { createUser, getUserById, get };
