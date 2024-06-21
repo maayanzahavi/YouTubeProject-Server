@@ -6,13 +6,12 @@ const createComment = async (user, text) => {
     return await comment.save();
 }
 
-const getComments = async (video_id) => {
-    const video = await Video.find({ video_id });
+const getComments = async (videoId) => {
+    const video = await Video.findById(videoId).populate('comments');
     if (!video) {
         return null;
     }
-    const comments = await post.populate("comments");
-    return comments.comments; 
+    return video.comments;
 };
 
 module.exports = { createComment, getComments };

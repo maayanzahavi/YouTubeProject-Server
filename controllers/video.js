@@ -24,7 +24,7 @@ const updateVideo = async (req, res) => {
 }
 
 const deleteVideo = async (req, res) => {
-    const video = await videoService.updateVideo(
+    const video = await videoService.deleteVideo(
         req.params.id,  
     );
     if (!video) {
@@ -48,4 +48,4 @@ const getVideoById = async (req, res) => {
     res.json(video);
 }
 
-module.exports = {createVideo}
+module.exports = {createVideo, updateVideo, deleteVideo, getVideos, getVideoById}
