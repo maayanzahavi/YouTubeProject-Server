@@ -1,8 +1,8 @@
 const Video = require('../models/video'); 
 
 const createVideo = async (title, img, video, description, owner) => {
-    const video = new Video({ title, img, video, description, owner });
-    return await video.save();
+    const newVideo = new Video({ title, img, video, description, owner });
+    return await newVideo.save();
 }
 
 const getVideoById = async (id) => {
