@@ -14,4 +14,40 @@ const getComments = async (videoId) => {
     return video.comments;
 };
 
-module.exports = { createComment, getComments };
+const editComment = async (newContent, id) => {
+    try {
+        const updatedComment = await Comment.findOneAndUpdate(
+          { _id: id },
+          { $set: { content: newContent } },
+          { new: true }
+        );
+    
+        if (updatedComment) {
+          return true;
+        }
+        return false;
+      } catch (error) {
+        return false;
+      }
+};
+
+const deleteComment = async (videoId, commentId) => {
+    try {
+        const deletedComment = await Comment.findOneAndDelete({ _id: commentId });
+        if (!deletedComment) {
+          return false;
+        }
+        const post = await Video.findByIdAndUpdate(videoId, {
+          $pull: { comments: commentId },
+        });
+    
+        if (!post) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        return false;
+      }
+};
+
+module.exports = { createComment, getComments, editComment, deleteComment };
