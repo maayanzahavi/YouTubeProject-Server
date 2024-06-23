@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Comment = new Schema({
+const commentSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId, 
-        ref: User,
-        require: true
+        ref: 'User', // Referencing the model name as a string
+        required: true // Correct spelling
     },
     text: {
         type: String,
@@ -17,4 +17,4 @@ const Comment = new Schema({
     }
 });
 
-module.exports = mongoose.model('Comment', Comment);
+module.exports = mongoose.model('Comment', commentSchema);

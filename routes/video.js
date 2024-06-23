@@ -1,14 +1,8 @@
-const videoController = require('../controllers/post');
-const tokenModel = require("../models/token");
-
+const videoController = require('../controllers/video');
 const express = require("express");
-var router = express.Router();
+const router = express.Router();
 
 router.route("/")
-    .get(tokenModel.isLoggedIn, videoController.getVideos);
-
+    .get(videoController.getVideos); // Removed tokenModel.isLoggedIn
 
 module.exports = router;
-
-
-

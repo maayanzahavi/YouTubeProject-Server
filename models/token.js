@@ -1,6 +1,15 @@
 const jwt = require("jsonwebtoken");
 const key = "I<3DuaLipa";
 
+// Generate a token
+function getToken(req) {
+    const data = { username: req.body.username };
+    // Generate the token.
+    const token = jwt.sign(data, key);
+    // Return the token to the browser
+    return token;
+  }
+
 const isLoggedIn = (req, res, next) => {
     // Check if the request has an authorization header
     if (req.headers.authorization) {
@@ -23,5 +32,5 @@ const isLoggedIn = (req, res, next) => {
 };
 
 
-module.exports = { isLoggedIn };
+module.exports = { isLoggedIn, getToken };
   
