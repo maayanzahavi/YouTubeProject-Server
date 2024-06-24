@@ -30,4 +30,6 @@ app.use('/api/videos', videos);
 app.use('/api/tokens', tokensRouter);
 
 // Port listening to
-app.listen(8201);
+app.listen(process.env.PORT, () => {
+    console.log(`Server running at http://localhost:${process.env.PORT}/`);
+});

@@ -10,8 +10,8 @@ const getVideoById = async (id) => {
 };
 
 const getVideos = async () => {
-    return await Video.find({});
-
+    const videos = await Video.find({});
+    return videos;
 };
 
 const updateVideo = async (id, title, description, img) => {
@@ -38,22 +38,22 @@ const deleteVideo = async (id) => {
 
 const getTrendingVideos = async () => {
     try {
-        const allVideos = getVideos();
+        const allVideos = await getVideos(); // Ensure await is used
         const top10Videos = allVideos.sort((a, b) => b.views - a.views).slice(0, 10);
         const random10Videos = allVideos.sort(() => 0.5 - Math.random()).slice(0, 10);
         
         const combinedVideos = [...new Set([...top10Videos, ...random10Videos])].sort(() => 0.5 - Math.random()).slice(0, 20);
     
-        res.json(combinedVideos);
+        return combinedVideos;
       } catch (err) {
-        res.status(500).send('Server Error');
+        throw new Error('Server Error');
       }
 };
 
 
 const getUserVideos = async (username) => {
     try {
-        const allVideos = await getVideos();
+        const allVideos = await getVideos(); // Ensure await is used
         const userVideos = allVideos.filter(video => video.owner === username);
         return userVideos;
     } catch (err) {
@@ -61,11 +61,12 @@ const getUserVideos = async (username) => {
     }
 };
 
-
-module.exports = {  createVideo,
-                    getVideos, 
-                    getTrendingVideos, 
-                    getVideoById, 
-                    updateVideo, 
-                    deleteVideo, 
-                    getUserVideos }
+module.exports = {  
+    createVideo,
+    getVideos, 
+    getTrendingVideos, 
+    getVideoById, 
+    updateVideo, 
+    deleteVideo, 
+    getUserVideos 
+};

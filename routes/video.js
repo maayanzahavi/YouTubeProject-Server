@@ -1,10 +1,8 @@
 const videoController = require('../controllers/video');
-const tokenModel = require("../models/token");
-
 const express = require("express");
 const router = express.Router();
 
 router.route("/")
-    .get(videoController.getVideos);
+    .get(videoController.getVideos); // Removed tokenModel.isLoggedIn
 
 module.exports = router;

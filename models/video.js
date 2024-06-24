@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-const commentSchema = require('./comment').schema; // Import schema, not the model
+const commentSchema = require('./comment').schema;
 
 const videoSchema = new Schema({
     title: {
@@ -21,9 +20,8 @@ const videoSchema = new Schema({
         required: true
     },
     owner: {
-        type: String,
-        ref: 'User', // Referencing the model name as a string
-        required: true // Correct spelling
+        type: String, // Changed to String
+        required: true
     },
     likes: {
         type: Number,
@@ -31,7 +29,7 @@ const videoSchema = new Schema({
         default: 0
     },
     comments: {
-        type: [commentSchema], // Embedding commentSchema correctly
+        type: [commentSchema],
         default: []
     },
     views: {
@@ -39,6 +37,6 @@ const videoSchema = new Schema({
         required: true,
         default: 0
     }
-});
+} , { collection: 'Videos' });
 
 module.exports = mongoose.model('Video', videoSchema);
