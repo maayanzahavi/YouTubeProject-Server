@@ -26,7 +26,10 @@ mongoose.connect(process.env.CONNECTION_STRING)
 
 // Connecting to routers
 app.use('/api/videos', videos);
-//app.use('/api/users', users);
+// Connecting to routers
+
+app.use('/api/users', users);
+
 app.use('/api/tokens', tokensRouter);
 
 // Port listening to

@@ -3,6 +3,6 @@ const express = require("express");
 const router = express.Router();
 
 router.route("/")
-    .get(videoController.getVideos); // Removed tokenModel.isLoggedIn
+    .get(videoController.getTrendingVideos); // Removed tokenModel.isLoggedIn
 
 module.exports = router;
