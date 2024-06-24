@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const videos = require('./routes/video');
 const users = require('./routes/user');
 const tokensRouter = require('./routes/token');
-const customEnv = require('custom-env');
+require('dotenv').config({ path: './config/.env.local' });
 
 const app = express();
 
@@ -14,11 +14,14 @@ app.use(express.static('public'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-customEnv.env(process.env.NODE_ENV, './config');
+console.log('Connection String:', process.env.CONNECTION_STRING);
+console.log('Port:', process.env.PORT);
 
-mongoose.connect(process.env.CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+mongoose.connect(process.env.CONNECTION_STRING)
+.then(() => {
+    console.log('Connected to MongoDB');
+}).catch((error) => {
+    console.error('Error connecting to MongoDB:', error.message);
 });
 
 // Connecting to routers
@@ -27,4 +30,4 @@ app.use('/api/videos', videos);
 app.use('/api/tokens', tokensRouter);
 
 // Port listening to
-app.listen(process.env.PORT);
+app.listen(8201);

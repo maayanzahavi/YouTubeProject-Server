@@ -35,7 +35,11 @@ const deleteVideo = async (req, res) => {
 
 const getVideos = async (req, res) => {
     const videos = await videoService.getVideos();
-    res.json(videos);
+    if (videos.error) {
+        return res.status(videos.code).json({ error: videos.error });
+    } else {
+        return res.status(200).json(videos);
+    }
 }
 
 const getVideoById = async (req, res) => {

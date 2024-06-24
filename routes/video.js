@@ -5,6 +5,6 @@ const express = require("express");
 const router = express.Router();
 
 router.route("/")
-    .get(tokenModel.isLoggedIn, videoController.getVideos);
+    .get(videoController.getVideos);
 
 module.exports = router;

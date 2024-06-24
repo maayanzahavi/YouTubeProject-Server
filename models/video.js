@@ -21,7 +21,7 @@ const videoSchema = new Schema({
         required: true
     },
     owner: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'User', // Referencing the model name as a string
         required: true // Correct spelling
     },
