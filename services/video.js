@@ -6,6 +6,8 @@ const createVideo = async (title, img, video, description, owner) => {
 }
 
 const getVideoById = async (id) => {
+    console.log("getVideoById...");
+    // console.log('getVideoById: ',id);
     return await Video.findById(id);
 };
 
@@ -39,21 +41,25 @@ const deleteVideo = async (id) => {
 const getTrendingVideos = async () => {
     try {
         const allVideos = await getVideos(); // Ensure await is used
-        const top10Videos = allVideos.sort((a, b) => b.views - a.views).slice(0, 10);
-        const random10Videos = allVideos.sort(() => 0.5 - Math.random()).slice(0, 10);
-        
-        const combinedVideos = [...new Set([...top10Videos, ...random10Videos])].sort(() => 0.5 - Math.random()).slice(0, 20);
-    
-        return combinedVideos;
-      } catch (err) {
-        throw new Error('Server Error');
-      }
-};
+        // Get top 10 videos
+        const sortedVideos = allVideos.sort((a, b) => b.views - a.views);
+        const top10Videos = sortedVideos.slice(0, 10);
 
+        // Randomly choose 10 videos out of the remaning videos
+        const remainingVideos = sortedVideos.slice(10);
+        const random10Videos = remainingVideos.sort(() => 0.5 - Math.random()).slice(0, 10);
+
+        // Combine the top 10 videos and the 10 random videos
+        const combinedVideos = [...top10Videos, ...random10Videos].sort(() => 0.5 - Math.random());
+        return combinedVideos;
+    } catch (err) {
+        throw new Error('Server Error');
+    }
+};
 
 const getUserVideos = async (username) => {
     try {
-        const allVideos = await getVideos(); // Ensure await is used
+        const allVideos = await getVideos();
         const userVideos = allVideos.filter(video => video.owner === username);
         return userVideos;
     } catch (err) {

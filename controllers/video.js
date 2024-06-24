@@ -42,12 +42,24 @@ const getVideos = async (req, res) => {
     }
 }
 
+const getTrendingVideos = async (req, res) => {
+    try {
+        const videos = await videoService.getTrendingVideos();
+        console.log('Fetched videos:', videos); // Log the fetched videos
+        res.json(videos);
+    } catch (error) {
+        console.error('Error fetching videos:', error);
+        res.status(500).json({ error: 'Error fetching videos' });
+    }
+}
+
 const getVideoById = async (req, res) => {
-    const video = await videoService.getVideoById(req.params.id);
+    console.log("getVideoById in controller")
+    const video = await videoService.getVideoById(req.params.pid);
     if (!video) {
         return res.status(404).json({ errors: ['Video not found'] });
     }
     res.json(video);
 }
 
-module.exports = {createVideo, updateVideo, deleteVideo, getVideos, getVideoById}
+module.exports = {createVideo, updateVideo, deleteVideo, getVideos, getTrendingVideos, getVideoById}
