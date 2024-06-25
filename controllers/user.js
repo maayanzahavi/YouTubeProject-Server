@@ -15,6 +15,11 @@ const getUserById = async (req, res) => {
         req.params.id));
 };
 
+const getUserByEmail = async (req, res) => {
+    res.json(await userService.getUserByEmail(
+        req.body.email));
+};
+
 const getUsers = async (req, res) => {
     res.json(await userService.getUsers());
 };
@@ -46,4 +51,4 @@ module.exports = { createUser, getUserById, getUsers, getUserVideos };
 
 
 
-module.exports = { createUser, getUserById, getUsers, getUserVideos, getUserAndVideos };
+module.exports = { createUser, getUserById, getUserByEmail, getUsers, getUserVideos, getUserAndVideos };

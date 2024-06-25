@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/maayanzahavi/WebPart2#readme",
   "devDependencies": {
+    "@types/node": "^20.14.8",
     "cross-env": "^7.0.3"
   }
 }
