@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Video = require('./video'); // Correctly import the Video model
+const Video = require('./video'); 
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -13,7 +13,8 @@ const UserSchema = new Schema({
     }, 
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     }, 
     password: {
         type: String,
@@ -24,9 +25,8 @@ const UserSchema = new Schema({
         required: true
     }, 
     photo: {
-        type: Number,
-        required: true,
-        default: 0 
+        type: String, 
+        required: true
     },
     liked_videos: {
         type: [{ type: Schema.Types.ObjectId, ref: Video }], 
