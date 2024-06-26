@@ -10,8 +10,30 @@ const getUserById = async (id) => {
     return await User.findById(id);
 };
 
+const getUserByEmail = async (email) => {
+    return await User.findOne({ email: email});
+};
+
 const getUsers = async () => {
     return await User.find({});
 };
 
-module.exports = { createUser, getUserById, getUsers };
+
+const getUserVideos = async (email) => {
+    try {
+        // Fetch the user by email and retrieve their videos field
+        const user = await User.findOne({ email }).populate('videos');
+        
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // Return the populated videos
+        return user.videos;
+    } catch (err) {
+        console.error(err);
+        throw new Error('Server Error');
+    }
+};
+
+module.exports = { createUser, getUserById, getUserByEmail, getUsers, getUserVideos };
