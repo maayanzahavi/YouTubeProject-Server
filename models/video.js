@@ -20,7 +20,7 @@ const videoSchema = new Schema({
         required: true
     },
     owner: {
-        type: String, // Changed to String
+        type: String,
         required: true
     },
     likes: {

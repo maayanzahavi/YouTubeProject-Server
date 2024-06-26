@@ -12,10 +12,10 @@ const createVideo = async (req, res) => {
 
 const updateVideo = async (req, res) => {
     const video = await videoService.updateVideo(
-        req.params.id, 
+        req.params.pid, 
         req.body.title, 
-        req.body.img, 
-        req.body.description
+        req.body.description, 
+        req.body.img
     );
     if (!video) {
         return res.status(404).json({ errors: ['Video not found'] });
