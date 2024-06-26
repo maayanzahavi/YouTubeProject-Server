@@ -29,13 +29,11 @@ const UserSchema = new Schema({
         required: true
     },
     liked_videos: {
-        type: [{ type: Schema.Types.ObjectId, ref: Video }], 
-        required: true,
+        type: [{ type: Schema.Types.ObjectId, ref: 'Video' }], 
         default: [] 
     },
     videos: {
-        type: [{ type: Schema.Types.ObjectId, ref: Video }],
-        required: true,
+        type: [{ type: Schema.Types.ObjectId, ref: 'Video' }],
         default: []
     }
 }, { collection: 'Users' });

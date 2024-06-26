@@ -27,6 +27,7 @@ const getUserById = async (req, res) => {
 };
 
 const getUserByEmail = async (req, res) => {
+
     const { password } = req.query;
     const email = req.params.id;
 
@@ -49,6 +50,7 @@ const getUserByEmail = async (req, res) => {
         }
     }
 };
+
 const getUsers = async (req, res) => {
     try {
         const users = await userService.getUsers();
@@ -76,11 +78,11 @@ const getUserVideos = async (req, res) => {
 
 const getUserAndVideos = async (req, res) => {
     try {
-        const user = await userService.getUserById(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        const userVideos = await videoService.getUserVideos(user.username);
+        // const user = await userService.getUserById(req.params.id);
+        // if (!user) {
+        //     return res.status(404).json({ message: "User not found" });
+        // }
+        const userVideos = await userService.getUserVideos(req.params.id);
         res.json({ user, videos: userVideos });
     } catch (err) {
         res.status(500).json({ message: err.message });
