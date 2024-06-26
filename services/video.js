@@ -1,10 +1,30 @@
 const Video = require('../models/video'); 
 const Comment = require('../models/comment'); 
 const User = require('../models/user'); 
+const userController = require('../controllers/user'); 
 
-const createVideo = async (title, img, video, description, owner) => {
-    const newVideo = new Video({ title, img, video, description, owner });
-    return await newVideo.save();
+const createVideo = async (title, description, img, video, owner) => {
+    let newVideo = new Video({
+        title, description, img, video, owner
+    });
+    if (await addVideoToUser(newVideo, owner))
+        return await newVideo.save();
+    return null;
+}
+
+async function addVideoToUser(video, owner) {
+    try {
+        const user = userController.getUserByEmail(email);
+
+        if (user) {
+            user.videos.push(video._id);
+            await user.save();
+            return true;
+        }
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 }
 
 const getVideoById = async (id) => {

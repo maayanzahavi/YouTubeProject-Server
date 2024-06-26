@@ -8,7 +8,9 @@ var router = express.Router();
 
 router.route("/:id").get(userController.getUserByEmail);
 
-router.route("/:id/videos").get(userController.getUserVideos);
+router.route("/:id/videos")
+.get(userController.getUserVideos)
+.post(tokenModel.isLoggedIn, videoController.createVideo);
 
 router.route('/').post(userController.createUser);
 

@@ -1,13 +1,18 @@
 const videoService = require('../services/video');
 
 const createVideo = async (req, res) => {
-    res.json(await videoService.createVideo(
-        req.body.title, 
-        req.body.img, 
-        req.body.video, 
-        req.body.description, 
+    const newVideo = await videoService.createVideo(
+        req.body.title,
+        req.body.description,
+        req.body.img,
+        req.body.video,
         req.body.owner
-    ));
+    );
+    if (newVideo) {
+        return res.status(201).json(newVideo);
+    } else {
+        return res.status(500).json({ error: "Failed to create video" });
+    }
 };
 
 const updateVideo = async (req, res) => {
@@ -45,7 +50,6 @@ const getVideos = async (req, res) => {
 const getTrendingVideos = async (req, res) => {
     try {
         const videos = await videoService.getTrendingVideos();
-        console.log('Fetched videos:', videos); // Log the fetched videos
         res.json(videos);
     } catch (error) {
         console.error('Error fetching videos:', error);
