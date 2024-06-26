@@ -7,8 +7,7 @@ const createUser = async (req, res) => {
 
     try {
         const newUser = await userService.createUser(firstName, lastName, email, password, displayName, photo);
-        const token = tokenModule.getToken(req);
-        res.status(201).json({ newUser, token }); 
+        res.status(201).json({ newUser }); 
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
@@ -60,13 +59,20 @@ const getUsers = async (req, res) => {
 };
 
 const getUserVideos = async (req, res) => {
+
     try {
-        const userVideos = await videoService.getUserVideos(req.params.username);
+ 
+        const userVideos = await userService.getUserVideos(req.params.id);
+ 
         res.json(userVideos);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+ 
+    } catch (err) {
+ 
+        res.status(500).json({ message: err.message });
+ 
     }
-};
+ 
+ };
 
 const getUserAndVideos = async (req, res) => {
     try {

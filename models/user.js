@@ -3,11 +3,11 @@ const Video = require('./video');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    first_name: {
+    firstName: {
         type: String,
         required: true
     }, 
-    last_name: {
+    lastName: {
         type: String, 
         required: true
     }, 
@@ -20,7 +20,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     }, 
-    display_name: {
+    displayName: {
         type: String,
         required: true
     }, 

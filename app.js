@@ -12,8 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.static('public'));
 
-// הגדרת ה-body-parser עם גודל גוף מוגדל
-app.use(bodyParser.json({ limit: '50mb' }));  // הגדלת הגודל המותר של הגוף ל-50MB
+
+app.use(bodyParser.json({ limit: '50mb' }));  
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 console.log('Connection String:', process.env.CONNECTION_STRING);

@@ -7,7 +7,6 @@ const createVideo = async (title, img, video, description, owner) => {
 
 const getVideoById = async (id) => {
     console.log("getVideoById...");
-    // console.log('getVideoById: ',id);
     return await Video.findById(id);
 };
 
@@ -57,15 +56,7 @@ const getTrendingVideos = async () => {
     }
 };
 
-const getUserVideos = async (username) => {
-    try {
-        const allVideos = await getVideos();
-        const userVideos = allVideos.filter(video => video.owner === username);
-        return userVideos;
-    } catch (err) {
-        throw new Error('Server Error');
-    }
-};
+
 
 module.exports = {  
     createVideo,
@@ -73,6 +64,5 @@ module.exports = {
     getTrendingVideos, 
     getVideoById, 
     updateVideo, 
-    deleteVideo, 
-    getUserVideos 
+    deleteVideo,  
 };
