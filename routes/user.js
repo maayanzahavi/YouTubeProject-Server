@@ -14,6 +14,7 @@ router.route('/').post(userController.createUser);
 
 router.route("/:id/videos/:pid")
     .get(videoController.getVideoById)
-    .patch(videoController.updateVideo);
+    .patch(tokenModel.isLoggedIn, videoController.updateVideo)
+    .delete(tokenModel.isLoggedIn, videoController.deleteVideo);
 
 module.exports = router;

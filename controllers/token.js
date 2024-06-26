@@ -3,9 +3,9 @@ const tokenModel = require('../models/token.js')
 
 //check if the login was succesful
 async function processLogin(req, res) {
-    const user_name = req.body.username
+    const email = req.body.username
     const password = req.body.password
-    if (await userService.isSigned(user_name, password) == false) {
+    if (await userService.isSigned(email, password) == false) {
         res.status(404).json( { error: 'Invalid username and/or password' } )
     } else {
         res.status(201).json( { token: tokenModel.getToken(req) } )

@@ -24,7 +24,7 @@ const updateVideo = async (req, res) => {
 }
 
 const deleteVideo = async (req, res) => {
-    const video = await videoService.deleteVideo(req.params.id);
+    const video = await videoService.deleteVideo(req.params.id, req.params.pid);
     if (!video) {
         return res.status(404).json({ errors: ['Video not found'] });
     }

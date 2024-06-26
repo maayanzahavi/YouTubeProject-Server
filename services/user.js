@@ -48,4 +48,16 @@ const getUserVideos = async (email) => {
     }
 };
 
-module.exports = { createUser, getUserById, getUserByEmail, getUsers, getUserVideos, checkPassword };
+async function isSigned(user_name, password) {
+    try {
+      let user = await User.findOne({ user_name, password });
+      if (!user) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+module.exports = { createUser, getUserById, getUserByEmail, getUsers, getUserVideos, checkPassword, isSigned };
