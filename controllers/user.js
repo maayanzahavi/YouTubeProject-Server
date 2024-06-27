@@ -13,7 +13,6 @@ const createUser = async (req, res) => {
     }
 };
 
-  
 const getUserById = async (req, res) => {
     try {
         const user = await userService.getUserById(req.params.id);
@@ -27,7 +26,6 @@ const getUserById = async (req, res) => {
 };
 
 const getUserByEmail = async (req, res) => {
-
     const { password } = req.query;
     const email = req.params.id;
 
@@ -61,27 +59,16 @@ const getUsers = async (req, res) => {
 };
 
 const getUserVideos = async (req, res) => {
-
     try {
- 
         const userVideos = await userService.getUserVideos(req.params.id);
- 
         res.json(userVideos);
- 
     } catch (err) {
- 
         res.status(500).json({ message: err.message });
- 
     }
- 
- };
+};
 
 const getUserAndVideos = async (req, res) => {
     try {
-        // const user = await userService.getUserById(req.params.id);
-        // if (!user) {
-        //     return res.status(404).json({ message: "User not found" });
-        // }
         const userVideos = await userService.getUserVideos(req.params.id);
         res.json({ user, videos: userVideos });
     } catch (err) {
@@ -89,4 +76,34 @@ const getUserAndVideos = async (req, res) => {
     }
 };
 
-module.exports = { createUser, getUserById, getUserByEmail, getUsers, getUserVideos, getUserAndVideos };
+const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { firstName, lastName, email, displayName, photo } = req.body;
+
+    try {
+        const updateData = { firstName, lastName, email, displayName, photo };
+        const updatedUser = await userService.updateUser(id, updateData);
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+const deleteUser = async (req, res) => {
+    try {
+        const user = await userService.deleteUser(req.params.id);
+        if (user) {
+            return res.status(200).json({ message: "User has been deleted" });
+        } else {
+            return res.status(404).json({ error: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+module.exports = { createUser, getUserById, getUserByEmail, getUsers, getUserVideos, getUserAndVideos, updateUser, deleteUser };

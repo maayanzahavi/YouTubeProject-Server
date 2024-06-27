@@ -7,6 +7,10 @@ var router = express.Router();
 
 router.route("/:id").get(userController.getUserByEmail);
 
+router.route("/:id").put(tokenModel.isLoggedIn ,userController.updateUser);
+
+router.route("/:id").delete(tokenModel.isLoggedIn, userController.deleteUser);
+
 router.route("/:id/videos").get(userController.getUserVideos);
 
 router.route('/').post(userController.createUser);

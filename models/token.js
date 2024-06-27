@@ -3,7 +3,7 @@ const key = "I<3DuaLipa";
 
 // Generate a token
 function getToken(req) {
-    const data = { username: req.body.username };
+    const data = { email: req.body.email };
     // Generate the token.
     const token = jwt.sign(data, key);
     // Return the token to the browser
