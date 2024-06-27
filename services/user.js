@@ -1,9 +1,9 @@
 const User = require('../models/user');
+const Video = require('../models/video');
 
 const createUser = async (firstName, lastName, email, password, displayName, photo) => {
-    const user = new User({ firstName: firstName, lastName: lastName, email, password, displayName: displayName, photo });
+    const user = new User({ firstName, lastName, email, password, displayName, photo });
     return await user.save();
-    
 };
 
 const getUserById = async (id) => {
@@ -11,7 +11,7 @@ const getUserById = async (id) => {
 };
 
 const getUserByEmail = async (email) => {
-    return await User.findOne({ email: email });
+    return await User.findOne({ email });
 };
 
 const getUsers = async () => {
@@ -33,18 +33,43 @@ const checkPassword = async (email, password) => {
 
 const getUserVideos = async (email) => {
     try {
-        // Fetch the user by email and retrieve their videos field
         const user = await User.findOne({ email }).populate('videos');
-        
         if (!user) {
             throw new Error('User not found');
         }
-
-        // Return the populated videos
         return user.videos;
     } catch (err) {
         console.error(err);
         throw new Error('Server Error');
+    }
+};
+
+const updateUser = async (email, updateData) => {
+    try {
+        const user = await getUserByEmail(email);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        const updatedUser = await User.findOneAndUpdate({ email }, updateData, { new: true });
+        return updatedUser;
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw error;
+    }
+};
+
+const deleteUser = async (email) => {
+    try {
+        const userToDelete = await User.findOne({ email: email });
+        if (userToDelete) {
+            await User.findOneAndDelete({ email: email });
+            await Video.deleteMany({ email: userToDelete.email }); // Ensure this matches the schema
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        throw error;
     }
 };
 
@@ -60,4 +85,4 @@ async function isSigned(user_name, password) {
     }
   };
 
-module.exports = { createUser, getUserById, getUserByEmail, getUsers, getUserVideos, checkPassword, isSigned };
+module.exports = { createUser, getUserById, getUserByEmail, getUsers, checkPassword, getUserVideos, updateUser, deleteUser, isSigned };

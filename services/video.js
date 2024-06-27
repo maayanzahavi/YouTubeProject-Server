@@ -33,7 +33,6 @@ async function addVideoToUser(video, email) {
 
 const getVideoById = async (id) => {
     console.log("getVideoById...");
-    // console.log('getVideoById: ',id);
     return await Video.findById(id);
 };
 
@@ -103,11 +102,13 @@ const getTrendingVideos = async () => {
     }
 };
 
+
+
 module.exports = {  
     createVideo,
     getVideos, 
     getTrendingVideos, 
     getVideoById, 
     updateVideo, 
-    deleteVideo, 
+    deleteVideo,  
 };

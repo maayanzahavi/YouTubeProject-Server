@@ -6,11 +6,14 @@ const express = require("express");
 const video = require("../models/video.js");
 var router = express.Router();
 
-router.route("/:id").get(userController.getUserByEmail);
+router.route("/:id")
+  .get(userController.getUserByEmail)
+  .put(tokenModel.isLoggedIn ,userController.updateUser)
+  .delete(tokenModel.isLoggedIn, userController.deleteUser);
 
 router.route("/:id/videos")
-.get(userController.getUserVideos)
-.post(videoController.createVideo);
+  .get(userController.getUserVideos)
+  .post(videoController.createVideo);
 
 router.route('/').post(userController.createUser);
 
