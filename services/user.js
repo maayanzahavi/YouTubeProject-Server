@@ -73,7 +73,6 @@ const deleteUser = async (email) => {
     }
 };
 
-
 async function isSigned(user_name, password) {
     try {
       let user = await User.findOne({ user_name, password });
@@ -85,4 +84,5 @@ async function isSigned(user_name, password) {
       return false;
     }
   };
+
 module.exports = { createUser, getUserById, getUserByEmail, getUsers, checkPassword, getUserVideos, updateUser, deleteUser, isSigned };

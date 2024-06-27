@@ -32,7 +32,7 @@ const getUserByEmail = async (req, res) => {
     if (password) {
         try {
             const user = await userService.checkPassword(email, password);
-            res.json({ message: 'Login successful', token: tokenModule.getToken(req) }); 
+            //res.json({ message: 'Login successful', token: tokenModule.getToken(req) }); 
         } catch (error) {
             res.status(401).json({ message: error.message });
         }
