@@ -10,7 +10,7 @@ router.route("/:id").get(userController.getUserByEmail);
 
 router.route("/:id/videos")
 .get(userController.getUserVideos)
-.post(tokenModel.isLoggedIn, videoController.createVideo);
+.post(videoController.createVideo);
 
 router.route('/').post(userController.createUser);
 

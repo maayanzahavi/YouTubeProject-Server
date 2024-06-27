@@ -1,6 +1,9 @@
 const videoService = require('../services/video');
 
 const createVideo = async (req, res) => {
+    console.log("createVideo Controller email:", req.body.owner);
+    console.log("createVideo Controller title:", req.body.title);
+
     const newVideo = await videoService.createVideo(
         req.body.title,
         req.body.description,
