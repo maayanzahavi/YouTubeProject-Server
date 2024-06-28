@@ -70,7 +70,7 @@ async function removeVideoFromOwner(userId, videoId) {
     }
 }
 
-const updateVideo = async (id, title, description, img) => {
+const updateVideo = async (id, title, description, img, likes, views) => {
     const video = await getVideoById(id);
     if (!video) {
         return null;
@@ -78,6 +78,8 @@ const updateVideo = async (id, title, description, img) => {
     video.title = title;
     video.description = description;
     video.img = img;
+    video.likes = likes;
+    video.views = views;
     await video.save();
     return video;
 };

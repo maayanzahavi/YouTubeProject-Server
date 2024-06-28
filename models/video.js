@@ -28,6 +28,11 @@ const videoSchema = new Schema({
         required: true,
         default: 0
     },
+    likedBy: {
+        type: [String],
+        required: true,
+        default: []
+    },
     comments: {
         type: [commentSchema],
         default: []
