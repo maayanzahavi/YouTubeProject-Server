@@ -21,8 +21,8 @@ router.route('/')
 
 router.route("/:id/videos/:pid")
     .get(videoController.getVideoById)
-    .patch(tokenModel.isLoggedIn, videoController.updateVideo)
-    .delete(tokenModel.isLoggedIn, videoController.deleteVideo);
+    .patch(videoController.updateVideo)
+    .delete(videoController.deleteVideo);
   
 router.route("/:id/videos/:pid/comments")
     .post(tokenModel.isLoggedIn, commentController.createComment)
@@ -31,7 +31,7 @@ router.route("/:id/videos/:pid/comments")
   router
     .route("/:id/videos/:pid/likes")
     .get(likeController.isLiked)
-    .patch(likeController.setLikes);
+    .patch(tokenModel.isLoggedIn, likeController.setLikes);
 
   router
     .route("/:id/videos/:pid/views")

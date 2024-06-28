@@ -78,8 +78,6 @@ const updateVideo = async (id, title, description, img, likes, views) => {
     video.title = title;
     video.description = description;
     video.img = img;
-    video.likes = likes;
-    video.views = views;
     await video.save();
     return video;
 };

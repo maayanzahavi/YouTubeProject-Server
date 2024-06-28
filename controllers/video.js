@@ -24,8 +24,6 @@ const updateVideo = async (req, res) => {
         req.body.title, 
         req.body.description, 
         req.body.img,
-        req.body.likes, 
-        req.body.views
     );
     if (!video) {
         return res.status(404).json({ errors: ['Video not found'] });
