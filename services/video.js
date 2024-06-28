@@ -5,11 +5,11 @@ const userController = require('../controllers/user');
 const userService = require('./user'); 
 
 const createVideo = async (title, description, img, video, owner) => {
-    let newVideo = new Video({
+    const newVideo = new Video({
         title, description, img, video, owner
     });
-    console.log("createVideo email:", owner);
     if (await addVideoToUser(newVideo, owner))
+        console.log("added video");
         return await newVideo.save();
     return null;
 }

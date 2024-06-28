@@ -28,17 +28,17 @@ router.route("/:id/videos/:pid/comments")
     .post(tokenModel.isLoggedIn, commentController.createComment)
     .get(tokenModel.isLoggedIn, commentController.getComments);
 
-  router
-    .route("/:id/videos/:pid/likes")
+  router.route("/:id/videos/:pid/likes")
+    .patch(likeController.setLikes);
+    
+  router.route("/:id/videos/:pid/likes/:uid")
     .get(likeController.isLiked)
-    .patch(tokenModel.isLoggedIn, likeController.setLikes);
 
-  router
-    .route("/:id/videos/:pid/views")
+  router.route("/:id/videos/:pid/views")
     .patch(viewController.updateViews);
   
   router.route("/:id/videos/:pid/comments/:cid")
-  .delete(tokenModel.isLoggedIn, commentController.deleteComment)
-  .patch(tokenModel.isLoggedIn, commentController.editComment);
+    .delete(tokenModel.isLoggedIn, commentController.deleteComment)
+    .patch(tokenModel.isLoggedIn, commentController.editComment);
 
 module.exports = router;

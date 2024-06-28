@@ -2,9 +2,9 @@ const likeService = require("../services/like");
 
 //if the user liked the video, return true. else, return false
 const isLiked = async (req, res) => {
-console.log("userEmail in likecontroller: ", userEmail);
-  const userEmail = req.body.userEmail;
+  const userEmail = req.params.uid;
   const pid = req.params.pid;
+  console.log("userEmail in likecontroller: ", userEmail);
   const isLiked = await likeService.isLiked(userEmail, pid);
   if (isLiked) {
     return res.status(200).json({ isLiked: true });
