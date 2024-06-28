@@ -1,53 +1,72 @@
 const Comment = require('../models/comment');
 const Video = require('../models/video');
 
-const createComment = async (user, text) => {
-    const comment = new Comment({ user, text });
-    return await comment.save();
-}
+const createComment = async (commentData) => {
+  const { userName, profilePic, text, videoId } = commentData;
+  const comment = new Comment({ userName, profilePic, text });
+  await comment.save();
 
-const getComments = async (videoId) => {
-    const video = await Video.findById(videoId).populate('comments');
-    if (!video) {
-        return null;
-    }
-    return video.comments;
+  // Find the video and add the comment to its comments array
+  const video = await Video.findById(videoId);
+  if (!video) {
+    throw new Error('Video not found');
+  }
+
+  video.comments.push(comment);
+  await video.save();
+  return comment;
 };
 
-const editComment = async (newContent, id) => {
-    try {
-        const updatedComment = await Comment.findOneAndUpdate(
-          { _id: id },
-          { $set: { content: newContent } },
-          { new: true }
-        );
-    
-        if (updatedComment) {
-          return true;
-        }
-        return false;
-      } catch (error) {
-        return false;
-      }
+const getComments = async (videoId) => {
+  const video = await Video.findById(videoId);
+  if (!video) {
+    throw new Error('Video not found');
+  }
+  return video.comments;
 };
 
 const deleteComment = async (videoId, commentId) => {
-    try {
-        const deletedComment = await Comment.findOneAndDelete({ _id: commentId });
-        if (!deletedComment) {
-          return false;
-        }
-        const post = await Video.findByIdAndUpdate(videoId, {
-          $pull: { comments: commentId },
-        });
-    
-        if (!post) {
-          return false;
-        }
-        return true;
-      } catch (error) {
-        return false;
-      }
+  try {
+    const deletedComment = await Comment.findOneAndDelete({ _id: commentId });
+    if (!deletedComment) {
+      return false;
+    }
+
+    const video = await Video.findByIdAndUpdate(videoId, {
+      $pull: { comments: { _id: commentId } },
+    });
+
+    if (!video) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
+
+
+const editComment = async (videoId, commentId, newText) => {
+  try {
+    // Find and update the comment in the comments collection
+    const updatedComment = await Comment.findByIdAndUpdate(
+      commentId,
+      { $set: { text: newText } },
+      { new: true }
+    );
+
+    // Find the video and update the comment in its comments array
+    const video = await Video.findById(videoId);
+    const commentIndex = video.comments.findIndex(comment => comment._id.toString() === commentId);
+
+    video.comments[commentIndex].text = newText;
+    await video.save();
+    return updatedComment;
+  } catch (error) {
+    return false;
+  }
+};
+
+
 
 module.exports = { createComment, getComments, editComment, deleteComment };
