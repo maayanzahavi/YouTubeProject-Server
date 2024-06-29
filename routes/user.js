@@ -29,10 +29,8 @@ router.route("/:id/videos/:pid/comments")
     .get(tokenModel.isLoggedIn, commentController.getComments);
 
   router.route("/:id/videos/:pid/likes")
-    .patch(likeController.setLikes);
-    
-  router.route("/:id/videos/:pid/likes/:uid")
-    .get(likeController.isLiked)
+    .get(tokenModel.isLoggedIn, likeController.isLiked)
+    .patch(tokenModel.isLoggedIn, likeController.setLikes);
 
   router.route("/:id/videos/:pid/views")
     .patch(viewController.updateViews);
