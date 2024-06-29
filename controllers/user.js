@@ -26,27 +26,11 @@ const getUserById = async (req, res) => {
 };
 
 const getUserByEmail = async (req, res) => {
-    const { password } = req.query;
-    const email = req.params.id;
-
-    if (password) {
-        try {
-            const user = await userService.checkPassword(email, password);
-            //res.json({ message: 'Login successful', token: tokenModule.getToken(req) }); 
-        } catch (error) {
-            res.status(401).json({ message: error.message });
-        }
-    } else {
-        try {
-            const user = await userService.getUserByEmail(email);
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' });
-            }
-            res.json(user);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    }
+    const user = await userService.getUserByEmail(req.params.id);
+  if (user == null) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  return res.status(200).json(user);
 };
 
 const getUsers = async (req, res) => {

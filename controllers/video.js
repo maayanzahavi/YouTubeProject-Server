@@ -23,7 +23,7 @@ const updateVideo = async (req, res) => {
         req.params.pid, 
         req.body.title, 
         req.body.description, 
-        req.body.img
+        req.body.img,
     );
     if (!video) {
         return res.status(404).json({ errors: ['Video not found'] });
