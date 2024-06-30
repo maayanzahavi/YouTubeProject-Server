@@ -2,9 +2,9 @@ const commentService = require('../services/comment');
 
 const createComment = async (req, res) => {
   const { pid: videoId } = req.params;
-  const { userName, profilePic, text } = req.body;
+  const { userName, email, profilePic, text } = req.body;
   try {
-    const comment = await commentService.createComment({ userName, profilePic, text, videoId });
+    const comment = await commentService.createComment({ userName, email, profilePic, text, videoId });
     res.status(201).json(comment);
   } catch (error) {
     console.error('Error creating comment:', error);
@@ -23,35 +23,35 @@ const getComments = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-    const { pid: videoId, cid: commentId } = req.params;
-    console.log('Deleting comment:', commentId, 'from video:', videoId);
-  
-    try {
-      const success = await commentService.deleteComment(videoId, commentId);
-      if (success) {
-        res.status(200).json({ message: 'Comment deleted successfully' });
-      } else {
-        res.status(404).json({ error: 'Comment not found or could not be deleted' });
-      }
-    } catch (error) {
-      console.error('Error deleting comment:', error);
-      res.status(500).json({ error: error.message });
+  const { pid: videoId, cid: commentId } = req.params;
+  try {
+    const success = await commentService.deleteComment(videoId, commentId);
+    if (success) {
+      res.status(200).json({ message: 'Comment deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Comment not found or could not be deleted' });
     }
-  };
-  const editComment = async (req, res) => {
-    const { userEmail,  pid: videoId, cid: commentId } = req.params;
-    const { newText } = req.body;
-  
-    try {
-      const success = await commentService.editComment(videoId, commentId, newText);
-      if (success) {
-        res.status(200).json({ message: 'Comment edited successfully' });
-      } else {
-        res.status(404).json({ error: 'Comment not found or could not be edited' });
-      }
-    } catch (error) {
-      console.error('Error editing comment:', error);
-      res.status(500).json({ error: error.message });
+  } catch (error) {
+    console.error('Error deleting comment:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const editComment = async (req, res) => {
+  const { pid: videoId, cid: commentId } = req.params;
+  const { newText } = req.body;
+
+  try {
+    const success = await commentService.editComment(videoId, commentId, newText);
+    if (success) {
+      res.status(200).json({ message: 'Comment edited successfully' });
+    } else {
+      res.status(404).json({ error: 'Comment not found or could not be edited' });
     }
-  };
-  module.exports = { createComment, getComments, deleteComment, editComment };
+  } catch (error) {
+    console.error('Error editing comment:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { createComment, getComments, deleteComment, editComment };

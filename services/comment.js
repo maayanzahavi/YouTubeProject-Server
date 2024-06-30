@@ -2,8 +2,8 @@ const Comment = require('../models/comment');
 const Video = require('../models/video');
 
 const createComment = async (commentData) => {
-  const { userName, profilePic, text, videoId } = commentData;
-  const comment = new Comment({ userName, profilePic, text });
+  const { userName, email, profilePic, text, videoId } = commentData;
+  const comment = new Comment({ userName, email, profilePic, text });
   await comment.save();
 
   // Find the video and add the comment to its comments array
@@ -45,7 +45,6 @@ const deleteComment = async (videoId, commentId) => {
   }
 };
 
-
 const editComment = async (videoId, commentId, newText) => {
   try {
     // Find and update the comment in the comments collection
@@ -66,7 +65,5 @@ const editComment = async (videoId, commentId, newText) => {
     return false;
   }
 };
-
-
 
 module.exports = { createComment, getComments, editComment, deleteComment };
