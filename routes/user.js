@@ -14,15 +14,15 @@ router.route("/:id")
 
 router.route("/:id/videos")
   .get(userController.getUserVideos)
-  .post(videoController.createVideo);
+  .post(tokenModel.isLoggedIn, videoController.createVideo);
 
 router.route('/')
   .post(userController.createUser);
 
 router.route("/:id/videos/:pid")
     .get(videoController.getVideoById)
-    .patch(videoController.updateVideo)
-    .delete(videoController.deleteVideo);
+    .patch(tokenModel.isLoggedIn, videoController.updateVideo)
+    .delete(tokenModel.isLoggedIn, videoController.deleteVideo);
   
 router.route("/:id/videos/:pid/comments")
     .post(tokenModel.isLoggedIn, commentController.createComment)
