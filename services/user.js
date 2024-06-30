@@ -63,7 +63,7 @@ const deleteUser = async (email) => {
         const userToDelete = await User.findOne({ email: email });
         if (userToDelete) {
             await User.findOneAndDelete({ email: email });
-            await Video.deleteMany({ email: userToDelete.email }); // Ensure this matches the schema
+            await Video.deleteMany({ email: userToDelete.email }); 
             return true;
         }
         return false;
