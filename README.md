@@ -13,10 +13,10 @@
 CONNECTION_STRING="{your_mongoDB_connection_string}"
 PORT={port_number}
 ```
-For example:
-```bash
-CONNECTION_STRING="mongodb://localhost:27017"
-PORT=8200
-```
+  For example:
+  ```bash
+  CONNECTION_STRING="mongodb://localhost:27017"
+  PORT=8200
+  ```
 
 
