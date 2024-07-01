@@ -1,8 +1,8 @@
 # YouTube Server
 
 ## Run the server
-1. Clone the repository.
-2. Open terminal in the folder.
+1. Clone the repository to your computer.
+2. Open terminal in the cloned folder.
 3. Install dependencies using npm install.
 
 ## Create a config folder
