@@ -20,7 +20,9 @@
   ```
 
 * Open MongoDB on your computer.
-  __Notice:__  a JavaScript script will automatically run and initialize the DataBase when you first run the server. Please make sure you don't have other collections named Users, Videos, or Comments.
+  __Notice:__  a JavaScript script will automatically run and initialize the DataBase when you first run the server. Please make sure you don't have other collections named Users, Videos,    or Comments.
+  
+## See the web application
 * Run the server using npm start.
 * On your browser search for: http://localhost:{port_number} (the same port number you chose in earlier).
 
