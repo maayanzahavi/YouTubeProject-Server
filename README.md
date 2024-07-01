@@ -23,7 +23,7 @@
 * __Note__ that a JavaScript script will automatically run and initialize a __YouTube_101__ database when you run the server. Please make sure you don't have a DB with that called __YouTube_101__.
   
 ## See the web application
-* Run the server using __npm start__ (if you're using unix, run __nmp run startUnix__ instead).
+* Run the server using __npm start__ (if you're using unix, run __npm run startUnix__ instead).
 * On your browser search for: http://localhost:{port_number} (the same port number you chose earlier).
 
 ## Working Process
