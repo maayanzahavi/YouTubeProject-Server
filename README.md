@@ -9,12 +9,12 @@
 1. Create a new folder in the reposiroty named 'config'.
 2. Inside the 'config' folder create the file .env.
 3. Add the following content to the .env file:
-   ```bash
+```bash
 CONNECTION_STRING="{your_mongoDB_connection_string}"
 PORT={port_number}
 ```
 For example:
-   ```bash
+```bash
 CONNECTION_STRING="mongodb://localhost:27017"
 PORT=8200
 ```
