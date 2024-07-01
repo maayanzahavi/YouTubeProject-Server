@@ -17,13 +17,13 @@ async function insertDataFromJson() {
   try {
     await mongoose.connect(process.env.CONNECTION_STRING);
 
-    const usersCollectionExists = await collectionExists('users');
-    const videosCollectionExists = await collectionExists('videos');
-    const commentsCollectionExists = await collectionExists('comments');
+    const usersCollectionExists = await collectionExists('Users');
+    const videosCollectionExists = await collectionExists('Videos');
+    const commentsCollectionExists = await collectionExists('Comments');
 
     if (usersCollectionExists || videosCollectionExists || commentsCollectionExists) {
       await mongoose.disconnect();
-      console.log('Data already inserted. Starting server.');
+      console.log('Data already inserted to DB.');
       return;
     }
 
@@ -33,7 +33,7 @@ async function insertDataFromJson() {
       const { firstName, lastName, email, password, displayName, photo } = user;
       const existingUser = await UserService.getUserByEmail(email);
       if (!existingUser) {
-        const photoPath = path.join(__dirname, photo);
+        const photoPath = path.join(__dirname + '/public', photo);
         if (!fs.existsSync(photoPath)) {
           throw new Error(`File not found: ${photoPath}`);
         }
@@ -49,8 +49,9 @@ async function insertDataFromJson() {
 
     for (const videoData of videosData) {
       const { title, img, video, description, owner, comments } = videoData;
-      const imgPath = path.join(__dirname, img);
-      const videoPath = path.join(__dirname, video);
+      const imgPath = path.join(__dirname + '/public', img);
+
+      const videoPath = path.join(__dirname + '/public', video);
 
       console.log(`Creating video with data: ${JSON.stringify({ title, description, imgPath, videoPath, owner })}`);
 
@@ -61,20 +62,20 @@ async function insertDataFromJson() {
         throw new Error(`File not found: ${videoPath}`);
       }
 
-      const newVideo = await VideoService.createVideo(title, description, imgPath, videoPath, owner);
+      const newVideo = await VideoService.createVideo(title, description, img, video, owner);
       videoMap.set(newVideo.title, newVideo._id);
 
       // Insert Comments for the Video
       for (const comment of comments) {
         const { userName, email, profilePic, text, date } = comment;
-        const profilePicPath = path.join(__dirname, profilePic);
+        const profilePicPath = path.join(__dirname + '/public', profilePic);
 
         console.log(`Inserting comment for video: ${newVideo.title}`);
 
         if (!fs.existsSync(profilePicPath)) {
           throw new Error(`File not found: ${profilePicPath}`);
         }
-        if (!userName || !email || !profilePic || !text) {
+        if (!userName || !email || !profilePic || !text || !date) {
           console.error('Comment validation failed: All fields are required.', comment);
           continue; // Skip invalid comments
         }
@@ -82,8 +83,9 @@ async function insertDataFromJson() {
           await CommentService.createComment({
             userName,
             email,
-            profilePic: profilePicPath,
+            profilePic,
             text,
+            date,
             videoId: newVideo._id,
           });
         } catch (error) {
@@ -96,7 +98,7 @@ async function insertDataFromJson() {
     const commentsData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/comments.json'), 'utf-8'));
     for (const comment of commentsData) {
       const { userName, email, profilePic, text, date, videoTitle } = comment;
-      const profilePicPath = path.join(__dirname, profilePic);
+      const profilePicPath = path.join(__dirname + '/public', profilePic);
       if (!fs.existsSync(profilePicPath)) {
         throw new Error(`File not found: ${profilePicPath}`);
       }
@@ -116,7 +118,7 @@ async function insertDataFromJson() {
         await CommentService.createComment({
           userName,
           email,
-          profilePic: profilePicPath,
+          profilePic: profilePic,
           text,
           videoId,
         });
