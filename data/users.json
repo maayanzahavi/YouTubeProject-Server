@@ -6,7 +6,7 @@
     "email": "maayan@gmail.com",
     "password": "1234Haha!",
     "displayName": "MaayanZ",
-    "photo": "public/profilePics/maayan.png",
+    "photo": "/profilePics/maayan.png",
     "likedVideos": [],
     "videos": [
       "6673dfd8b073f04679c315f7",
@@ -31,7 +31,7 @@
     "email": "dua@gmail.com",
     "password": "123Haha!",
     "displayName": "Dula Peep",
-    "photo": "public/profilePics/dua.png",
+    "photo": "/profilePics/dua.png",
     "likedVideos": [],
     "videos": [
       "6673dfd8b073f04679c315fa",
@@ -46,7 +46,7 @@
     "email": "amit@gmail.com",
     "password": "123Haha!",
     "displayName": "Amit K",
-    "photo": "public/profilePics/amit.png",
+    "photo": "/profilePics/amit.png",
     "likedVideos": [],
     "videos": [
       "66794e76b073f04679c31609",
@@ -61,7 +61,7 @@
     "email": "hemi@gmail.com",
     "password": "123Haha!",
     "displayName": "Hemi",
-    "photo": "public/profilePics/hemi.png",
+    "photo": "/profilePics/hemi.png",
     "likedVideos": [],
     "videos": [
       "6673dfd8b073f04679c315f8",
@@ -78,7 +78,7 @@
     "email": "snail@gmail.com",
     "password": "123Haha!",
     "displayName": "Mr. Snail",
-    "photo": "public/profilePics/snail.png",
+    "photo": "/profilePics/snail.png",
     "likedVideos": [],
     "videos": [
       "6673dfd8b073f04679c315fb",
@@ -93,7 +93,7 @@
     "email": "Carla@gmail.com",
     "password": "123Haha!",
     "displayName": "Carla",
-    "photo": "public/profilePics/amit.png",
+    "photo": "/profilePics/amit.png",
     "liked_videos": [],
     "videos": [
       { "$oid": "667d33e4e6506d2b2e78738d" }

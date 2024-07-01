@@ -33,7 +33,13 @@ async function addVideoToUser(video, email) {
 
 const getVideoById = async (id) => {
     console.log("getVideoById...");
-    return await Video.findById(id);
+    try {
+        return await Video.findById(id);
+    }
+    catch (error) {
+        console.log(error);
+        return null;
+    }
 };
 
 const getVideos = async () => {

@@ -3,7 +3,7 @@
     "_id": { "$oid": "66829c3c9617adb39ade4d99" },
     "userName": "Dula Peep",
     "email": "dua@gmail.com",
-    "profilePic": "public/profilePics/dua.png",
+    "profilePic": "/profilePics/dua.png",
     "text": "Beautiful",
     "date": { "$date": "2024-07-01T12:08:28.942Z" },
     "__v": 0
@@ -12,7 +12,7 @@
     "_id": { "$oid": "66829c679617adb39ade4e0b" },
     "userName": "MaayanZ",
     "email": "maayan@gmail.com",
-    "profilePic": "public/profilePics/maayan.png",
+    "profilePic": "/profilePics/maayan.png",
     "text": "Wowww",
     "date": { "$date": "2024-07-01T12:09:11.029Z" },
     "__v": 0
@@ -21,7 +21,7 @@
     "_id": { "$oid": "66829d269617adb39ade4e2a" },
     "userName": "MaayanZ",
     "email": "maayan@gmail.com",
-    "profilePic": "public/profilePics/maayan.png",
+    "profilePic": "/profilePics/maayan.png",
     "text": "Wowww",
     "date": { "$date": "2024-07-01T12:12:22.960Z" },
     "__v": 0
@@ -30,7 +30,7 @@
     "_id": { "$oid": "6682a1633c36e91b0910e0fb" },
     "userName": "MaayanZ",
     "email": "maayan@gmail.com",
-    "profilePic": "public/profilePics/maayan.png",
+    "profilePic": "/profilePics/maayan.png",
     "text": "So funny :)",
     "date": { "$date": "2024-07-01T12:30:27.970Z" },
     "__v": 0
