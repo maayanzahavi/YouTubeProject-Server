@@ -45,6 +45,7 @@ We divided the tasks into separate components, focusing on:
 * Additional components: Created screens for the user page and trending videos to enhance the user interface and user experience.
 
 __React Repository For This Part__
+
 https://github.com/maayanzahavi/WebPart2-React.git
 
 ## Enjoy!
