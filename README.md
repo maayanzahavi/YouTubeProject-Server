@@ -20,7 +20,7 @@
   ```
 
 * Open MongoDB on your computer.
-**Notice:**  a JavaScript script will automatically run and initialize the DataBase when you first run the server. Please make sure you don't have other collections named Users, Videos,    or Comments.
+**Note:**  a JavaScript script will automatically run and initialize the DataBase when you first run the server. Please make sure you don't have other collections named Users, Videos,    or Comments.
   
 ## See the web application
 * Run the server using npm start.
