@@ -20,20 +20,20 @@
   ```
 
 * Open MongoDB on your computer.
-* Note that a JavaScript script will automatically run and initialize the Database when you first run the server. Please make sure you don't have other collections named Users, Videos,    or Comments.
+* __Note__ that a JavaScript script will automatically run and initialize a __YouTube_101__ database when you run the server. Please make sure you don't have a DB with that called __YouTube_101__.
   
 ## See the web application
 * Run the server using __npm start__.
 * On your browser search for: http://localhost:{port_number} (the same port number you chose earlier).
 
-## Working Proccess
-Initial Server Setup - 
+## Working Process
+__Initial Server Setup__ 
 At the start, we focused on building the server itself. We collaboratively wrote the server functions and organized them into routes, services, models, and controllers. Within each of these, we implemented the necessary functionalities for users, videos, comments, and tokens. We also set up and worked with MongoDB, creating the database structure and collections necessary for our application.
 
-Work Distribution
+__Work Distribution__
 Subsequently, we divided the tasks. Each team member worked on modifying the functionality in React to fetch the required data from the server using API commands.
 
-Specific Tasks
+__Specific Tasks__
 We divided the tasks into separate components, focusing on:
 
 * User-related screens: Editing, registration, and login.
@@ -42,7 +42,7 @@ We divided the tasks into separate components, focusing on:
 * Integrating these components: Ensuring seamless functionality across the application by integrating the user, video, and comment components.
 * Additional components: Created screens for the user page and trending videos to enhance the user interface and user experience.
 
-# Enjoy!
+## Enjoy!
 
 
 
