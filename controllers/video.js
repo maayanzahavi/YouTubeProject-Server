@@ -1,8 +1,6 @@
 const videoService = require('../services/video');
 
 const createVideo = async (req, res) => {
-    console.log("createVideo Controller email:", req.body.owner);
-    console.log("createVideo Controller title:", req.body.title);
 
     const newVideo = await videoService.createVideo(
         req.body.title,
@@ -12,7 +10,7 @@ const createVideo = async (req, res) => {
         req.body.owner
     );
     if (newVideo) {
-        return res.status(201).json(newVideo);
+        return res.status(200).json(newVideo);;
     } else {
         return res.status(500).json({ error: "Failed to create video" });
     }
@@ -28,7 +26,7 @@ const updateVideo = async (req, res) => {
     if (!video) {
         return res.status(404).json({ errors: ['Video not found'] });
     }
-    res.json(video);
+    return res.status(200).json({ message: "User has been updated" });
 }
 
 const deleteVideo = async (req, res) => {
@@ -36,37 +34,43 @@ const deleteVideo = async (req, res) => {
     if (!video) {
         return res.status(404).json({ errors: ['Video not found'] });
     }
-    res.json(video);
+    return res.status(200).json({ message: "User has been deleted" });
 }
 
+// Get all videos
 const getVideos = async (req, res) => {
     try {
         const videos = await videoService.getVideos();
-        console.log('Fetched videos:', videos); // Log the fetched videos
-        res.json(videos);
+        if (!videos) {
+            return res.status(404).json({ error: "Couldn't get videos" });
+        }
+        return res.status(200).json(videos);
     } catch (error) {
         console.error('Error fetching videos:', error);
-        res.status(500).json({ error: 'Error fetching videos' });
+        return res.status(500).json({ error: 'Error fetching videos' });
     }
 }
 
+// Get 10 most popular videos + 10 random videos
 const getTrendingVideos = async (req, res) => {
     try {
         const videos = await videoService.getTrendingVideos();
-        res.json(videos);
+        if (!videos) {
+            return res.status(404).json({ error: "Couldn't get videos" });
+        }
+        return res.status(200).json(videos);
     } catch (error) {
         console.error('Error fetching videos:', error);
-        res.status(500).json({ error: 'Error fetching videos' });
+        return res.status(500).json({ error: "Error fetching videos" });
     }
 }
 
 const getVideoById = async (req, res) => {
-    console.log("getVideoById in controller")
     const video = await videoService.getVideoById(req.params.pid);
     if (!video) {
-        return res.status(404).json({ errors: ['Video not found'] });
+        return res.status(404).json({ error: "Video not found" });
     }
-    res.json(video);
+    return res.status(200).json(video);
 }
 
 module.exports = {createVideo, updateVideo, deleteVideo, getVideos, getTrendingVideos, getVideoById}
