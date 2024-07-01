@@ -3,7 +3,7 @@
 ## Run the server
 1. Clone the repository to your computer.
 2. Open terminal in the cloned folder.
-3. Install dependencies using npm install.
+3. Run __npm install__ to install dependencies.
 
 ## Create a config folder
 1. Create a new folder in the reposiroty named 'config'.
