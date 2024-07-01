@@ -31,9 +31,11 @@ __Initial Server Setup__
 At the start, we focused on building the server itself. We collaboratively wrote the server functions and organized them into routes, services, models, and controllers. Within each of these, we implemented the necessary functionalities for users, videos, comments, and tokens. We also set up and worked with MongoDB, creating the database structure and collections necessary for our application.
 
 __Work Distribution__
+
 Subsequently, we divided the tasks. Each team member worked on modifying the functionality in React to fetch the required data from the server using API commands.
 
 __Specific Tasks__
+
 We divided the tasks into separate components, focusing on:
 
 * User-related screens: Editing, registration, and login.
