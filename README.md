@@ -24,7 +24,9 @@
   
 ## See the web application
 * Run the server using __npm start__.
-* On your browser search for: http://localhost:{port_number} (the same port number you chose in earlier).
+* On your browser search for: http://localhost:{port_number} (the same port number you chose earlier).
+
+# Enjoy!
 
 
 
