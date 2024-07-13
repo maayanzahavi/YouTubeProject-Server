@@ -30,8 +30,13 @@ const updateVideo = async (req, res) => {
 }
 
 const deleteVideo = async (req, res) => {
+    console.log("delete controller before");
     const video = await videoService.deleteVideo(req.params.id, req.params.pid);
+    console.log("delete controller after");
+    console.log("delete service remove from owner: ", video);
+
     if (!video) {
+        console.log("controller not found");
         return res.status(404).json({ errors: ['Video not found'] });
     }
     return res.status(200).json({ message: "User has been deleted" });

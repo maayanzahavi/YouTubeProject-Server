@@ -43,12 +43,15 @@ const getVideos = async () => {
 
 const deleteVideo = async (userId, videoId) => {
     try {
+        console.log("delete service before ", userId, videoId);
         const video = await Video.findById(videoId).populate('comments');;
         // Make sure the user ia authorised to delete this post
         if (video && video.owner == userId) {
             await Video.findOneAndDelete({ _id: videoId });
+            console.log("delete service video found");
             const commentIds = video.comments.map(comment => comment._id);
             await Comment.deleteMany({ _id: { $in: commentIds } });
+            console.log("delete srevice comments");
             return removeVideoFromOwner(userId, videoId);
         }
         return false;
@@ -59,7 +62,9 @@ const deleteVideo = async (userId, videoId) => {
 };
 
 async function removeVideoFromOwner(userId, videoId) {
+    console.log("delete service remove from owner");
     try {
+        console.log("delete service remove from owner in try");
         await User.updateOne(
             { userId }, 
             { $pull: { videos: videoId } }) 

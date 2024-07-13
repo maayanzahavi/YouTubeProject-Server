@@ -2,7 +2,9 @@ const User = require('../models/user');
 const Video = require('../models/video');
 
 const createUser = async (firstName, lastName, email, password, displayName, photo) => {
+    console.log("create user photo service", photo);
     const user = new User({ firstName, lastName, email, password, displayName, photo });
+    console.log("create user photo service new ", user.photo);
     return await user.save();
 };
 

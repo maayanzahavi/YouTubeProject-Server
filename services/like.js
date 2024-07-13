@@ -26,7 +26,7 @@ const setLikes = async (userEmail, pid) => {
     console.log("passed video");
     if (!video) {
         console.log("failed in video");
-        return false;
+        return null;
     }
     if (didLike) {
         // Remove user email from the video likes array
@@ -39,10 +39,10 @@ const setLikes = async (userEmail, pid) => {
         video.likes++;
         await video.save();
     }
-    return true;
+    return video;
   } catch (error) {
     console.log("failed in catch");
-    return false;
+    return null;
   }
 };
 

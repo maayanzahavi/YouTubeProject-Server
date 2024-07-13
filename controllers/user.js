@@ -2,8 +2,11 @@ const userService = require('../services/user');
 
 const createUser = async (req, res) => {  
     const { firstName, lastName, email, password, displayName, photo } = req.body;
+    console.log("create user photo ", photo);
     try {
         const newUser = await userService.createUser(firstName, lastName, email, password, displayName, photo);
+        console.log("create user returned photo ", newUser.photo);
+
         if (!newUser) {
             return res.status(409).json({ error: "User with this email already exists" });
         } 
