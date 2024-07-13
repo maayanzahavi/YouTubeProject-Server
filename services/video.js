@@ -1,119 +1,99 @@
-const Video = require('../models/video'); 
-const Comment = require('../models/comment'); 
-const User = require('../models/user'); 
-const userController = require('../controllers/user'); 
-const userService = require('./user'); 
+const Video = require('../models/video');
+const Comment = require('../models/comment');
+const User = require('../models/user');
+const userService = require('./user');
 
 const createVideo = async (title, description, img, video, owner) => {
-    const newVideo = new Video({
-        title, description, img, video, owner
-    });
-    if (await addVideoToUser(newVideo, owner))
-        console.log("added video");
+    try {
+      const newVideo = new Video({
+        title,
+        description,
+        img,
+        video,
+        owner
+      });
+  
+      if (await addVideoToUser(newVideo, owner)) {
         return await newVideo.save();
-    return null;
-}
-
-async function addVideoToUser(video, email) {
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error in videoService.createVideo:', error.message);
+      return null;
+    }
+  };
+  
+const addVideoToUser = async (video, email) => {
     try {
         const user = await userService.getUserByEmail(email);
-        console.log("getUserByEmail email:", email);
-        console.log("getUserByEmail:", user);
         if (user) {
             user.videos.push(video._id);
             await user.save();
-            console.log("Video saved at user");
             return true;
         }
+        return false;
     } catch (error) {
-        console.log(error);
+        console.error('Error in addVideoToUser:', error.message);
         return false;
     }
-}
+};
 
 const getVideoById = async (id) => {
-    console.log("getVideoById...");
     return await Video.findById(id);
 };
 
 const getVideos = async () => {
-    const videos = await Video.find({});
-    return videos;
+    return await Video.find({});
 };
 
 const deleteVideo = async (userId, videoId) => {
     try {
-        console.log("delete service before ", userId, videoId);
-        const video = await Video.findById(videoId).populate('comments');;
-        // Make sure the user ia authorised to delete this post
+        const video = await Video.findById(videoId).populate('comments');
         if (video && video.owner == userId) {
             await Video.findOneAndDelete({ _id: videoId });
-            console.log("delete service video found");
-            const commentIds = video.comments.map(comment => comment._id);
-            await Comment.deleteMany({ _id: { $in: commentIds } });
-            console.log("delete srevice comments");
+            await Comment.deleteMany({ _id: { $in: video.comments.map(comment => comment._id) } });
             return removeVideoFromOwner(userId, videoId);
         }
         return false;
     } catch (error) {
-        console.log(error);
+        console.error('Error in deleteVideo:', error.message);
         return false;
     }
 };
 
-async function removeVideoFromOwner(userId, videoId) {
-    console.log("delete service remove from owner");
+const removeVideoFromOwner = async (userId, videoId) => {
     try {
-        console.log("delete service remove from owner in try");
-        await User.updateOne(
-            { userId }, 
-            { $pull: { videos: videoId } }) 
+        await User.updateOne({ _id: userId }, { $pull: { videos: videoId } });
         return true;
     } catch (error) {
-        console.log(error);
+        console.error('Error in removeVideoFromOwner:', error.message);
         return false;
     }
-}
-
-const updateVideo = async (id, title, description, img, likes, views) => {
-    const video = await getVideoById(id);
-    if (!video) {
-        return null;
-    }
-    video.title = title;
-    video.description = description;
-    video.img = img;
-    await video.save();
-    return video;
 };
 
+const updateVideo = async (id, title, description, img, video) => {
+    const vid = await getVideoById(id);
+    if (!vid) {
+        return null;
+    }
+    vid.title = title;
+    vid.description = description;
+    vid.img = img.replace(/\\/g, '/');
+    vid.video = video.replace(/\\/g, '/');
+    await vid.save();
+    return vid;
+};
 
 const getTrendingVideos = async () => {
     try {
-        const allVideos = await getVideos(); // Ensure await is used
-        // Get top 10 videos
-        const sortedVideos = allVideos.sort((a, b) => b.views - a.views);
-        const top10Videos = sortedVideos.slice(0, 10);
-
-        // Randomly choose 10 videos out of the remaning videos
-        const remainingVideos = sortedVideos.slice(10);
-        const random10Videos = remainingVideos.sort(() => 0.5 - Math.random()).slice(0, 10);
-
-        // Combine the top 10 videos and the 10 random videos
-        const combinedVideos = [...top10Videos, ...random10Videos].sort(() => 0.5 - Math.random());
-        return combinedVideos;
+        const allVideos = await getVideos();
+        const top10Videos = allVideos.sort((a, b) => b.views - a.views).slice(0, 10);
+        const random10Videos = allVideos.sort(() => 0.5 - Math.random()).slice(10, 20);
+        return [...top10Videos, ...random10Videos].sort(() => 0.5 - Math.random());
     } catch (err) {
         throw new Error('Server Error');
     }
 };
 
-
-
-module.exports = {  
-    createVideo,
-    getVideos, 
-    getTrendingVideos, 
-    getVideoById, 
-    updateVideo, 
-    deleteVideo,  
-};
+module.exports = { createVideo, getVideos, getTrendingVideos, getVideoById, updateVideo, deleteVideo };

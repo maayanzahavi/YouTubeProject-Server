@@ -1,12 +1,10 @@
 const userService = require('../services/user');
 
 const createUser = async (req, res) => {  
-    const { firstName, lastName, email, password, displayName, photo } = req.body;
-    console.log("create user photo ", photo);
+    const { firstName, lastName, email, password, displayName } = req.body;
+    const photo = req.files['photo'] ? `/${req.files['photo'][0].path.replace(/\\/g, '/')}` : null;
     try {
         const newUser = await userService.createUser(firstName, lastName, email, password, displayName, photo);
-        console.log("create user returned photo ", newUser.photo);
-
         if (!newUser) {
             return res.status(409).json({ error: "User with this email already exists" });
         } 
@@ -62,7 +60,8 @@ const getUserVideos = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { firstName, lastName, email, displayName, photo } = req.body;
+    const { firstName, lastName, email, displayName } = req.body;
+    const photo = req.files['photo'] ? `/${req.files['photo'][0].path.replace(/\\/g, '/')}` : null;
     try {
         const updateData = { firstName, lastName, email, displayName, photo };
         const updatedUser = await userService.updateUser(id, updateData);
@@ -75,6 +74,7 @@ const updateUser = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
 
 const deleteUser = async (req, res) => {
     try {
