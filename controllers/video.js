@@ -1,7 +1,9 @@
 const videoService = require('../services/video');
 
 const createVideo = async (req, res) => {
+    console.log("reacded createVideo controller");
     try {
+        console.log("createVideo controller in try");
         const img = req.files['img'] ? `/${req.files['img'][0].path.replace(/\\/g, '/')}` : null;
         const video = req.files['video'] ? `/${req.files['video'][0].path.replace(/\\/g, '/')}` : null;
         const { title, description, owner } = req.body;
@@ -17,6 +19,7 @@ const createVideo = async (req, res) => {
             throw new Error('Failed to create video');
         }
     } catch (error) {
+        console.log("failed createVideo controller - catch");
         console.error('An error occurred in createVideo:', error.message);
         return res.status(500).json({ error: 'Failed to create video' });
     }
