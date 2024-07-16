@@ -49,6 +49,7 @@ const getUserVideos = async (email) => {
 const updateUser = async (email, updateData) => {
     try {
         const user = await getUserByEmail(email);
+        console.log("user email", email);
         if (!user) {
             throw new Error('User not found');
         }

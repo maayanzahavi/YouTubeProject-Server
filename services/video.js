@@ -64,7 +64,7 @@ const deleteVideo = async (userId, videoId) => {
 
 const removeVideoFromOwner = async (userId, videoId) => {
     try {
-        await User.updateOne({ _id: userId }, { $pull: { videos: videoId } });
+        await User.updateOne({ email: userId }, { $pull: { videos: videoId } });
         return true;
     } catch (error) {
         console.error('Error in removeVideoFromOwner:', error.message);
@@ -72,17 +72,22 @@ const removeVideoFromOwner = async (userId, videoId) => {
     }
 };
 
-const updateVideo = async (id, title, description, img, video) => {
-    const vid = await getVideoById(id);
-    if (!vid) {
-        return null;
+const updateVideo = async (id, title, description, img) => {
+  try {
+    let video = await Video.findById(id);
+    if (!video) {
+      return null;
     }
-    vid.title = title;
-    vid.description = description;
-    vid.img = img.replace(/\\/g, '/');
-    vid.video = video.replace(/\\/g, '/');
-    await vid.save();
-    return vid;
+
+    video.title = title || video.title;
+    video.description = description || video.description;
+    video.img = img || video.img;
+
+    await video.save();
+    return video;
+  } catch (error) {
+    throw new Error('Failed to update video: ' + error.message);
+  }
 };
 
 const getTrendingVideos = async () => {

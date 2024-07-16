@@ -1,7 +1,10 @@
+const { log } = require('console');
 const videoService = require('../services/video');
 
 const createVideo = async (req, res) => {
+    console.log("reacded createVideo controller");
     try {
+        console.log("createVideo controller in try");
         const img = req.files['img'] ? `/${req.files['img'][0].path.replace(/\\/g, '/')}` : null;
         const video = req.files['video'] ? `/${req.files['video'][0].path.replace(/\\/g, '/')}` : null;
         const { title, description, owner } = req.body;
@@ -17,20 +20,31 @@ const createVideo = async (req, res) => {
             throw new Error('Failed to create video');
         }
     } catch (error) {
+        console.log("failed createVideo controller - catch");
         console.error('An error occurred in createVideo:', error.message);
         return res.status(500).json({ error: 'Failed to create video' });
     }
 };
 
 const updateVideo = async (req, res) => {
-    const img = req.files['img'] ? `/${req.files['img'][0].path.replace(/\\/g, '/')}` : null;
-    const { title, description } = req.body;
-    const updatedVideo = await videoService.updateVideo(req.params.pid, title, description, img, video);
-    if (!updatedVideo) {
+    try {
+      const img = req.files['img'] ? `/${req.files['img'][0].path.replace(/\\/g, '/')}` : null;
+      const { title, description } = req.body;
+  
+      const updatedVideo = await videoService.updateVideo(req.params.pid, title, description, img);
+      if (!updatedVideo) {
+        console.log("404");
         return res.status(404).json({ errors: ['Video not found'] });
+      }
+  
+      console.log("200");
+      return res.status(200).json( updatedVideo );
+    } catch (error) {
+        console.log("500");
+      console.error('Failed to update video:', error.message);
+      return res.status(500).json({ error: 'Failed to update video' });
     }
-    return res.status(200).json({ message: "Video has been updated" });
-};
+  };
 
 const deleteVideo = async (req, res) => {
     const video = await videoService.deleteVideo(req.params.id, req.params.pid);

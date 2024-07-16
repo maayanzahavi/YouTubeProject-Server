@@ -1,15 +1,21 @@
 const userService = require('../services/user');
 
 const createUser = async (req, res) => {  
-    const { firstName, lastName, email, password, displayName } = req.body;
-    const photo = req.files['photo'] ? `/${req.files['photo'][0].path.replace(/\\/g, '/')}` : null;
     try {
+        console.log("in try");
+        const photo = req.files['photo'] ? `/${req.files['photo'][0].path.replace(/\\/g, '/')}` : null;
+        console.log("photo: ", photo);
+        const { firstName, lastName, email, password, displayName } = req.body;
+        console.log("Request body: ", req.body);
+        console.log("Files: ", req.files);
         const newUser = await userService.createUser(firstName, lastName, email, password, displayName, photo);
         if (!newUser) {
+            console.log("no new user");
             return res.status(409).json({ error: "User with this email already exists" });
         } 
         return res.status(200).json(newUser); 
     } catch (error) {
+        console.log("in catch");
        return res.status(500).json({ error: 'Server error' });
     }
 };
@@ -66,11 +72,14 @@ const updateUser = async (req, res) => {
         const updateData = { firstName, lastName, email, displayName, photo };
         const updatedUser = await userService.updateUser(id, updateData);
         if (!updatedUser) {
+            console.log("404");
             return res.status(404).json({ message: 'User not found' });
         }
+        console.log("200");
         res.status(200).json(updatedUser);
     } catch (error) {
         console.error('Error updating user:', error);
+        console.log("500");
         res.status(500).json({ error: 'Server error' });
     }
 };
