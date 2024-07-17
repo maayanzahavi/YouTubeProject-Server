@@ -46,15 +46,22 @@ const getUserVideos = async (email) => {
     }
 };
 
-const updateUser = async (email, updateData) => {
+const updateUser = async (email, firstName, lastName, displayName, photo) => {
     try {
         const user = await getUserByEmail(email);
         console.log("user email", email);
         if (!user) {
             throw new Error('User not found');
         }
-        const updatedUser = await User.findOneAndUpdate({ email }, updateData, { new: true });
-        return updatedUser;
+
+        user.firstName = firstName || user.firstName;
+        user.lastName = lastName || user.lastName;
+        user.displayName = displayName || user.displayName;
+        user.photo = photo || user.photo;
+
+        await user.save();
+        return user;
+        
     } catch (error) {
         console.error('Error updating user:', error);
         throw error;

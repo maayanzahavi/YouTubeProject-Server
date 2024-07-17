@@ -69,8 +69,8 @@ const updateUser = async (req, res) => {
     const { firstName, lastName, email, displayName } = req.body;
     const photo = req.files['photo'] ? `/${req.files['photo'][0].path.replace(/\\/g, '/')}` : null;
     try {
-        const updateData = { firstName, lastName, email, displayName, photo };
-        const updatedUser = await userService.updateUser(id, updateData);
+        //const updateData = { firstName, lastName, email, displayName, photo };
+        const updatedUser = await userService.updateUser(id, firstName, lastName, displayName, photo);
         if (!updatedUser) {
             console.log("404");
             return res.status(404).json({ message: 'User not found' });
