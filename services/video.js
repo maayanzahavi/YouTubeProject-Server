@@ -74,7 +74,7 @@ const removeVideoFromOwner = async (userId, videoId) => {
 
 const updateVideo = async (id, title, description, img) => {
   try {
-    let video = await Video.findById(id);
+    const video = await Video.findById(id);
     if (!video) {
       return null;
     }
