@@ -13,6 +13,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "startWin": "set NODE_ENV=local && node initDatabase.js && node app.js",
+    "startUnix": "export NODE_ENV=local && node initDatabase.js && node app.js",
     "start": "SET NODE_ENV=local && node initDatabase.js && node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
