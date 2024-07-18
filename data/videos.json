@@ -270,10 +270,10 @@
   "_id": {
     "$oid": "667fc256d9dbcc64d2a23e1e"
   },
-  "title": "Test Video 3",
-  "img": "public/videos/basketball-snail.jpg",
-  "video": "public/videos/basketball-snail.mp4",
-  "description": "cdnjkkcd",
+  "title": "Mrtro in Paris",
+  "img": "public/videos/Metro-in-Paris.jpg",
+  "video": "public/videos/Metro-in-Paris.mp4",
+  "description": "Unbelieveable.",
   "owner": "maayan@gmail.com",
   "likes": 0,
   "likedBy": [],
