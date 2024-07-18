@@ -35,7 +35,7 @@ const setLikes = async (req, res) => {
   console.log("controller userEmail", userEmail);
   const updatedVideo = await likeService.setLikes(userEmail, pid);
   if (updatedVideo) {
-    return res.status(200).json({ updatedVideo });
+    return res.status(200).json( updatedVideo );
   } else {
     return res.status(404).json({ error: "video/user not found" });
   }
