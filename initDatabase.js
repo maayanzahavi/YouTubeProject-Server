@@ -5,6 +5,7 @@ const customENV = require('custom-env');
 const UserService = require('./services/user');
 const CommentService = require('./services/comment');
 const VideoService = require('./services/video');
+const Video = require('./models/video');
 
 customENV.env(process.env.NODE_ENV, './config');
 
@@ -62,7 +63,7 @@ async function insertVideosAndComments() {
   const videoMap = new Map();
 
   for (const videoData of videosData) {
-    const { title, img, video, description, owner, comments } = videoData;
+    const { title, img, video, description, owner, likes, views, comments } = videoData;
     const imgPath = path.join(__dirname, img);
     const videoPath = path.join(__dirname, video);
 
@@ -73,10 +74,13 @@ async function insertVideosAndComments() {
     }
 
     const newVideo = await VideoService.createVideo(title, description, ensureRelativePath(img), ensureRelativePath(video), owner);
-    videoMap.set(newVideo.title, newVideo._id);
+    if (newVideo) {
+      await Video.findByIdAndUpdate(newVideo._id, { likes: likes || 0, views: views || 0 });
+      videoMap.set(newVideo.title, newVideo._id);
 
-    for (const comment of comments) {
-      await insertComment(comment, newVideo._id);
+      for (const comment of comments) {
+        await insertComment(comment, newVideo._id);
+      }
     }
   }
 
@@ -122,3 +126,4 @@ function ensureRelativePath(filePath) {
 }
 
 insertDataFromJson();
+
