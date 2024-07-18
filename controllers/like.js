@@ -18,9 +18,9 @@ const isLiked = async (req, res) => {
         console.log("userEmail in likecontroller: ", userEmail);
         const isLiked = await likeService.isLiked(userEmail, pid);
         if (isLiked) {
-          return res.status(200).json({ isLiked: true });
+          return res.status(200).json( true );
         } else {
-          return res.status(200).json({ isLiked: false });
+          return res.status(404).json(false );
         }
     } catch {
 
