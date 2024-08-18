@@ -45,7 +45,10 @@ router.route("/:id/videos/:pid/likes")
   .patch(tokenModel.isLoggedIn, likeController.setLikes);
 
 router.route("/:id/videos/:pid/views")
-  .patch(viewController.updateViews);
+  .patch(tokenModel.isLoggedIn, viewController.updateViews);
+
+// router.route("/:id/videos/:pid/views/server")
+//   .patch(tokenModel.isLoggedIn, tcpSreverController.sendWatchInfo);
 
 router.route("/:id/videos/:pid/comments/:cid")
   .delete(tokenModel.isLoggedIn, commentController.deleteComment)
