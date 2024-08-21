@@ -3,7 +3,6 @@ const tcpSreverController = require("../controllers/tcpServer");
 
 const updateViews = async (req, res) => {
     const id = req.params.pid;
-    tcpSreverController.sendWatchInfo();
     const updatedVideo = await viewService.updateViews(id);
     if (updatedVideo) {
       return res.status(200).json(updatedVideo);
@@ -11,5 +10,5 @@ const updateViews = async (req, res) => {
       return res.status(200).json({ error: "Failed to update views" });
     }
   };
-  
+
 module.exports = { updateViews };

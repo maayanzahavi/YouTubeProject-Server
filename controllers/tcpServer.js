@@ -1,55 +1,65 @@
 const net = require("net");
+const videoService = require('../services/video');
 
-const sendWatchInfo = async (req, res) => {
-  const userId = req.body.userId;
-  const videoId = req.body.videoId;
+const getRecommendations = async (req, res) => {
+  const userId = req.params.id;
+  const videoId = req.params.pid;
 
   // Prepare the message format as required by the C++ server
-  const message = `user_${userId} watched video_${videoId}`;
+  const message = `${userId}:${videoId}`;
 
   let recommendations = [];
-  const client = new net.Socket();
 
-  client.connect(process.env.TCP_SERVER_PORT, process.env.TCP_SERVER_IP, () => {
-    console.log("Connected to TCP server");
+  if (userId != null) {
+    const client = new net.Socket();
 
-    // Send the watch information
-    sendAndReceive(message).then(() => {
-      // After sending the watch info, request recommendations
-      return sendAndReceive("recommend");
-    }).then(() => {
-      client.end();  // Close connection after receiving recommendations
-    });
-  });
+    const sendAndReceive = (msg) => {
+      return new Promise((resolve, reject) => {
+        client.write(`${msg}`);
+        console.log("Sending: " + msg);
 
-  const sendAndReceive = (msg) => {
-    return new Promise((resolve) => {
-      client.write(`${msg}`);
-      console.log("Sending: " + msg);
+        client.once("data", (data) => {
+          console.log(`Received data from TCP server: ${data.toString()}`);
+          resolve(data.toString());
+        });
 
-      client.once("data", (data) => {
-        console.log(`Received data from TCP server: ${data.toString()}`);
-
-        // If the message is a recommendation, store it
-        if (msg === "recommend") {
-          recommendations = data.toString().split(',');  // Assuming recommendations are comma-separated
-        }
-
-        resolve();
+        client.once("error", (err) => {
+          reject(err);
+        });
       });
+    };
+
+    client.connect(process.env.TCP_SERVER_PORT, process.env.TCP_SERVER_IP, async () => {
+      try {
+        console.log("Connected to TCP server");
+
+        // Send the watch information
+        await sendAndReceive(message);
+
+        // Request recommendations
+        const recommendationData = await sendAndReceive(`recommend:${userId}`);
+        recommendations = recommendationData.split(','); // Assuming recommendations are comma-separated
+
+        client.end(); // Close connection after receiving recommendations
+      } catch (err) {
+        console.error("Error during communication with TCP server:", err);
+        res.status(500).json({ error: "Error during communication with TCP server" });
+        client.end(); // Ensure the client connection is closed on error
+      }
     });
-  };
 
-  client.on("end", () => {
-    console.log("Disconnected from TCP server");
-    // Return recommendations to the frontend
-    res.status(200).json({ recommendations });
-  });
+    client.on("end", () => {
+      console.log("Disconnected from TCP server");
+      // Return recommendations to the frontend
+      res.status(200).json({ recommendations });
+    });
 
-  client.on("error", (err) => {
-    console.error("Error connecting to TCP server:", err);
-    res.status(500).json({ error: "Error connecting to TCP server" });
-  });
+    client.on("error", (err) => {
+      console.error("Error connecting to TCP server:", err);
+      res.status(500).json({ error: "Error connecting to TCP server" });
+    });
+  } 
+  return videoService.filterRecommendations(recommendations);
 };
 
-module.exports = { sendWatchInfo };
+module.exports = { getRecommendations };
