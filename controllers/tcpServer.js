@@ -1,4 +1,5 @@
 const net = require("net");
+const videoService = require('../services/video');
 
 const getRecommendations = async (req, res) => {
   const userId = req.params.id;
@@ -58,40 +59,7 @@ const getRecommendations = async (req, res) => {
       res.status(500).json({ error: "Error connecting to TCP server" });
     });
   } 
-  return filterRecommendations;
-};
-
-const filterRecommendations = (recommendations, allVideos) => {
-  // Step 1: If the recommendations array has more than 10 videos, keep the 10 most viewed
-  if (recommendations.length > 10) {
-    // Sort the recommendations array by views in descending order
-    recommendations.sort((a, b) => b.views - a.views);
-
-    // Keep only the top 10 most viewed videos
-    recommendations = recommendations.slice(0, 10);
-  }
-
-  // Step 2: If the recommendations array has fewer than 6 videos, add random videos
-  if (recommendations.length < 6) {
-    // Get the list of video IDs already in recommendations to avoid duplicates
-    const recommendedVideoIds = new Set(recommendations.map(video => video.id));
-
-    // Find videos that are not already in recommendations
-    const availableVideos = allVideos.filter(video => !recommendedVideoIds.has(video.id));
-
-    // Shuffle the availableVideos array to randomize the selection
-    for (let i = availableVideos.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [availableVideos[i], availableVideos[j]] = [availableVideos[j], availableVideos[i]];
-    }
-
-    // Add random videos from the available pool until we have at least 6 videos in recommendations
-    while (recommendations.length < 6 && availableVideos.length > 0) {
-      recommendations.push(availableVideos.pop());
-    }
-  }
-
-  return recommendations;
+  return videoService.filterRecommendations(recommendations);
 };
 
 module.exports = { getRecommendations };
