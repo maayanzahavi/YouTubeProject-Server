@@ -101,32 +101,43 @@ const getTrendingVideos = async () => {
     }
 };
 
-
 const filterRecommendations = async (recommendations) => {
-  // If the recommendations array has more than 10 videos, keep the 10 most viewed
-  if (recommendations.length > 10) {
-    recommendations.sort((a, b) => b.views - a.views);
-    recommendations = recommendations.slice(0, 10);
-  }
+  try {
+    // Fetch all available videos from the database (do this only once)
+    const allVideos = await getVideos();
+    console.log("all videos: ", allVideos);
 
-  // If the recommendations array has fewer than 6 videos, add random videos
-  if (recommendations.length < 6) {
-    const recommendedVideoIds = new Set(recommendations.map(video => video.id));
-    const availableVideos = Video.filter(video => !recommendedVideoIds.has(video.id));
-
-    // Shuffle the availableVideos array to randomize the selection
-    for (let i = availableVideos.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [availableVideos[i], availableVideos[j]] = [availableVideos[j], availableVideos[i]];
+    // If the recommendations array has more than 10 videos, keep the 10 most viewed
+    if (recommendations.length > 10) {
+      recommendations.sort((a, b) => b.views - a.views);
+      recommendations = recommendations.slice(0, 10);
     }
 
-    // Add random videos from the available pool until we have at least 6 videos in recommendations
-    while (recommendations.length < 6 && availableVideos.length > 0) {
-      recommendations.push(availableVideos.pop());
-    }
-  }
+    // If the recommendations array has fewer than 6 videos, add random videos
+    if (recommendations.length < 6) {
+      const recommendedVideoIds = new Set(recommendations.map(video => video._id));
+      console.log("recommendationVideos: ", recommendedVideoIds);
 
-  return recommendations;
+      // Filter out videos that are already recommended
+      const availableVideos = allVideos.filter(video => !recommendedVideoIds.has(video._id));
+      console.log("available: ", availableVideos);
+
+      // Shuffle and select enough random videos to make the total 6
+      const randomVideos = availableVideos
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 6 - recommendations.length);
+      console.log("random vidoes: ", randomVideos);
+
+
+      // Add random videos to recommendations
+      recommendations.push(...randomVideos);
+    }
+    console.log("recommendations: ", recommendations);
+    return recommendations;
+  } catch (error) {
+    console.error('Error in filterRecommendations:', error.message);
+    return recommendations;
+  }
 };
 
 module.exports = { createVideo, getVideos, getTrendingVideos, getVideoById, updateVideo, deleteVideo, filterRecommendations};
