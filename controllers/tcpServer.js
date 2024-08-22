@@ -2,13 +2,13 @@ const net = require("net");
 const videoService = require('../services/video');
 
 const getRecommendations = async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params.userEmail;
   const videoId = req.params.pid;
 
   console.log("user: ", userId, "video: ", videoId);
   let recommendations = [];
 
-  if (userId) {
+  if (userId !== "testuser@example.com") {
     const client = new net.Socket();
 
     const sendAndReceive = (msg) => {
