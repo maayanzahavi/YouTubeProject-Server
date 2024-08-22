@@ -13,7 +13,7 @@ const multer = require('multer');
 // Configure Multer for different file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'u5ploads/');
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);
