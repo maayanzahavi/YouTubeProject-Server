@@ -7,6 +7,7 @@ const commentController = require("../controllers/comment");
 const likeController = require("../controllers/like");
 const viewController = require("../controllers/view");
 const tokenModel = require("../models/token.js");
+const tcpSreverController = require("../controllers/tcpServer.js");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -47,8 +48,8 @@ router.route("/:id/videos/:pid/likes")
 router.route("/:id/videos/:pid/views")
   .patch(tokenModel.isLoggedIn, viewController.updateViews);
 
-// router.route("/:id/videos/:pid/views/server")
-//   .patch(tokenModel.isLoggedIn, tcpSreverController.sendWatchInfo);
+router.route("/:id/videos/:pid/recommendations")
+  .get(tcpSreverController.getRecommendations);
 
 router.route("/:id/videos/:pid/comments/:cid")
   .delete(tokenModel.isLoggedIn, commentController.deleteComment)
