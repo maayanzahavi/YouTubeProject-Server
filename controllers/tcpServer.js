@@ -8,7 +8,7 @@ const getRecommendations = async (req, res) => {
   console.log("user: ", userId, "video: ", videoId);
   let recommendations = [];
 
-  if (userId !== "testuser@example.com") {
+  if (userId !== "noUser") {
     const client = new net.Socket();
 
     const sendAndReceive = (msg) => {
