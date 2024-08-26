@@ -2,6 +2,7 @@ const Video = require('../models/video');
 const Comment = require('../models/comment');
 const User = require('../models/user');
 const userService = require('./user');
+const video = require('../models/video');
 
 const createVideo = async (title, description, img, video, owner) => {
     try {
@@ -102,51 +103,76 @@ const getTrendingVideos = async () => {
 };
 
 // Converts an array of video IDs to video objects based on the provided list of all videos
-const convertIdsToVideos = (videoIds, allVideos) => {
-  return videoIds.map(id => allVideos.find(video => video._id === id)).filter(Boolean);
+const convertIdsToVideos = async (videoIds, allVideos) => {
+  console.log("videoIds: ", videoIds);
+
+  // Map each video ID to its corresponding video object from the list of all videos
+  const videoList = videoIds.map(id => allVideos.filter(video => video._id === id));
+  
+  console.log("video list: ", videoList);
+  return videoList;
 };
 
 const filterRecommendations = async (recommendations) => {
   try {
-    // Fetch all available videos from the database (do this only once)
-    const allVideos = await getVideos();
-    console.log("All videos: ", allVideos);
-
-    // Convert recommendation IDs to video objects
-    recommendations = convertIdsToVideos(recommendations, allVideos);
-    console.log("Converted recommendations: ", recommendations);
-
-    // If the recommendations array has more than 10 videos, keep the 10 most viewed
-    if (recommendations.length > 10) {
-      recommendations.sort((a, b) => b.views - a.views); // Sort by views descending
-      recommendations = recommendations.slice(0, 10);    // Keep only the top 10
+    // Parse the recommendations if they are in string format
+    if (typeof recommendations === 'string') {
+      recommendations = JSON.parse(recommendations);
     }
 
-    // If the recommendations array has fewer than 6 videos, add random videos
-    if (recommendations.length < 6) {
-      const recommendedVideoIds = new Set(recommendations.map(video => video._id));
-      console.log("Recommendation video IDs: ", recommendedVideoIds);
+    console.log("Recommendations in filter: ", recommendations);
+
+    // Check if recommendations contain invalid entries like "[]"
+    recommendations = recommendations.filter(videoId => videoId !== "[]");
+
+    // Convert recommendation IDs to video objects using getVideoById
+    let videoList = [];
+    for (const videoId of recommendations) {
+      try {
+        const video = await getVideoById(videoId);  // Attempt to retrieve the video
+        if (video) {
+          videoList.push(video);  // Add valid videos to the list
+        }
+      } catch (error) {
+        console.warn(`Failed to retrieve video for ID: ${videoId}`);
+      }
+    }
+
+    console.log("Converted recommendations: ", videoList);
+
+    // If the videoList has more than 10 videos, keep the 10 most viewed
+    if (videoList.length > 10) {
+      videoList.sort((a, b) => b.views - a.views); // Sort by views descending
+      videoList = videoList.slice(0, 10);          // Keep only the top 10
+    }
+
+    // If the videoList has fewer than 6 videos, add random videos
+    if (videoList.length < 6) {
+      const allVideos = await getVideos();
+      console.log("All videos: ", allVideos);
 
       // Filter out videos that are already recommended
-      const availableVideos = allVideos.filter(video => !recommendedVideoIds.has(video._id));
+      const availableVideos = allVideos.filter(video => !videoList.includes(video));
       console.log("Available videos for recommendation: ", availableVideos);
 
       // Shuffle and select enough random videos to make the total 6
       const randomVideos = availableVideos
         .sort(() => 0.5 - Math.random())   // Shuffle the available videos
-        .slice(0, 6 - recommendations.length); // Pick as many as needed to reach 6
+        .slice(0, 6 - videoList.length);   // Pick as many as needed to reach 6
       console.log("Random videos: ", randomVideos);
 
       // Add random videos to recommendations
-      recommendations.push(...randomVideos);
+      videoList.push(...randomVideos);
     }
 
-    console.log("Final recommendations: ", recommendations);
-    return recommendations; // Return the final list of video objects
+    console.log("Final recommendations: ", videoList);
+    return videoList; // Return the final list of video objects
   } catch (error) {
     console.error('Error in filterRecommendations:', error.message);
-    return recommendations; // Return recommendations even in case of an error
+    return recommendations; // Return original recommendations even in case of an error
   }
 };
+
+
 
 module.exports = { createVideo, getVideos, getTrendingVideos, getVideoById, updateVideo, deleteVideo, filterRecommendations};
