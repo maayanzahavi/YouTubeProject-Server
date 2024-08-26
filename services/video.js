@@ -122,14 +122,22 @@ const filterRecommendations = async (recommendations) => {
 
     console.log("Recommendations in filter: ", recommendations);
 
+    // Check if recommendations contain invalid entries like "[]"
+    recommendations = recommendations.filter(videoId => videoId !== "[]");
+
     // Convert recommendation IDs to video objects using getVideoById
     let videoList = [];
     for (const videoId of recommendations) {
-      const video = await getVideoById(videoId);
-      if (video) {
-        videoList.push(video);
+      try {
+        const video = await getVideoById(videoId);  // Attempt to retrieve the video
+        if (video) {
+          videoList.push(video);  // Add valid videos to the list
+        }
+      } catch (error) {
+        console.warn(`Failed to retrieve video for ID: ${videoId}`);
       }
     }
+
     console.log("Converted recommendations: ", videoList);
 
     // If the videoList has more than 10 videos, keep the 10 most viewed
@@ -140,10 +148,6 @@ const filterRecommendations = async (recommendations) => {
 
     // If the videoList has fewer than 6 videos, add random videos
     if (videoList.length < 6) {
-      // const recommendedVideoIds = new Set(videoList.map(video => video._id));
-      // console.log("Recommendation video IDs: ", recommendedVideoIds);
-
-      // Fetch all available videos from the database (do this only once)
       const allVideos = await getVideos();
       console.log("All videos: ", allVideos);
 
@@ -165,8 +169,10 @@ const filterRecommendations = async (recommendations) => {
     return videoList; // Return the final list of video objects
   } catch (error) {
     console.error('Error in filterRecommendations:', error.message);
-    return recommendations; // Return recommendations even in case of an error
+    return recommendations; // Return original recommendations even in case of an error
   }
 };
+
+
 
 module.exports = { createVideo, getVideos, getTrendingVideos, getVideoById, updateVideo, deleteVideo, filterRecommendations};
