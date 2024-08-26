@@ -39,7 +39,7 @@ const getRecommendations = async (req, res) => {
             // Request recommendations from the C++ server
             const recommendationData = await sendAndReceive(`recommend:${userId}`);
             recommendations = recommendationData.split(','); // Assuming recommendations are comma-separated
-
+            console.log("recommendations from srver: ", recommendations);
             client.end(); // Close the TCP connection
             resolve(); // Resolve the promise to continue with the next steps
           } catch (err) {
