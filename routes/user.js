@@ -48,7 +48,7 @@ router.route("/:id/videos/:pid/likes")
 router.route("/:id/videos/:pid/views")
   .patch(tokenModel.isLoggedIn, viewController.updateViews);
 
-router.route("/:id/videos/:pid/recommendations")
+router.route("/:id/videos/:pid/recommendations/:userEmail")
   .get(tcpSreverController.getRecommendations);
 
 router.route("/:id/videos/:pid/comments/:cid")
