@@ -1,6 +1,6 @@
 # YouTube Server
 
-__Pay attention__: The server part for section 2 is under the branch `main` and for section 3 under the branch `Maintpart3`.
+__Pay attention__: The server part for section 2 is under the branch `main` , for section 3 under the branch `MaintPart3` and for section 4 under the branch 'MainPart4 .
 
 ## Run the server
 1. Clone the repository to your computer.
