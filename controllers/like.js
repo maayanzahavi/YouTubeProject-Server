@@ -17,8 +17,9 @@ const isLiked = async (req, res) => {
         const pid = req.params.pid;
         console.log("userEmail in likecontroller: ", userEmail);
         const isLiked = await likeService.isLiked(userEmail, pid);
+        console.log("isLiked: ", isLiked);
         if (isLiked) {
-          return res.status(200).json( true );
+          return res.status(200).json( isLiked );
         } else {
           return res.status(404).json(false );
         }
