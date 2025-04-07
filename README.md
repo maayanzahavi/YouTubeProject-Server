@@ -1,4 +1,4 @@
-# YouTube Server
+# YouTube Node.js Server
 
 ## Run the server
 1. Clone the repository to your computer.
