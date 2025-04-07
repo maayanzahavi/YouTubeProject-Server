@@ -46,7 +46,7 @@ We divided the tasks into separate components, focusing on:
 
 __React Repository For This Part__
 
-https://github.com/maayanzahavi/WebPart2-React.git
+https://github.com/maayanzahavi/YouTubeProject-React.git
 
 ## Enjoy!
 
